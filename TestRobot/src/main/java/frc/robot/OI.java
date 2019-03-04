@@ -86,12 +86,14 @@ public class OI {
     //buttonX.whenPressed(new Command_SetSparkMax(-0.1, buttonX));
     buttonA.whenPressed(new Command_SetSolenoid(0,buttonA));
     buttonY.whenPressed(new Command_SetSolenoid(2,buttonY));
-    //buttonB.whenPressed(new Command_SetSolenoid(1,buttonB));
-    //buttonX.whenPressed(new Command_SetSolenoid(-1,buttonX));
+    // 1 if extend (fwd)
+    buttonB.whenPressed(new Command_RaiseRobot(buttonB));
+    // -1 is retract (rev)
+    buttonX.whenPressed(new Command_SetSolenoid(-1,buttonX));
     buttonLB.whenPressed(new SetElevator(-0.3,buttonLB));
     buttonRB.whenPressed(new SetElevator(0.5,buttonRB));
     buttonBack.whenPressed(new Command_SetSolenoid(5,buttonBack));
-    buttonStart.whenPressed(new Command_PneumaticDrive(0.5,buttonStart));
+    buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
     povButtonUp.whenPressed(new SetElevator(-0.3, povButtonUp));
     povButtonDown.whenPressed(new SetElevator(0.75, povButtonDown));
     axisButtonLT.whenPressed(new SetElevator(-0.3,axisButtonLT,2));

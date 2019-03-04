@@ -23,6 +23,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import frc.robot.spartanutils.BNO055;
+import frc.robot.spartanutils.BNO055.CalData;
+import frc.robot.spartanutils.BNO055.reg_t;
+
 
 /**
  * Add your docs here.
@@ -41,11 +45,18 @@ public class Drivetrain extends Subsystem {
   private final CANEncoder SparkNeoEncoder2 = sparkNeoL2.getEncoder();
   private final CANEncoder SparkNeoEncoder3 = sparkNeoR3.getEncoder();
   private final CANEncoder SparkNeoEncoder4 = sparkNeoR4.getEncoder();
-  
-  private final AnalogInput Analog0 = new AnalogInput(0);
+  private static BNO055 imu;
   public final Gyro driveGyro = new ADXRS450_Gyro();
-  private final double twistSensitivity = 0.5;
+  private final double twistSensitivity = -0.5;
   private int counter;
+
+  public Drivetrain() {
+    super();
+    imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
+      BNO055.vector_type_t.VECTOR_EULER);
+  
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -54,23 +65,76 @@ public class Drivetrain extends Subsystem {
   public void SparkWithStick(double xSpeed, double zRotation) { 	
     
     differentialDrive.arcadeDrive(xSpeed, twistSensitivity*zRotation, false);
-    //sparkNeoL1.set(xSpeed);
-    //sparkNeoL2.set(xSpeed);
-    //sparkNeoR3.set(xSpeed);
-    //sparkNeoR4.set(xSpeed);
-    //PWMSpark.set(xSpeed);
     if (xSpeed >0.5){
        //Digital0.set(true);
     }
     //else {Digital0.set(false);}
   }
-  public double getAnalog0() { 	
-    //SparkNeo1.set(speed);
-    return Analog0.getVoltage();
-  }
+
   public void reset(){
     //sparkNeoL1.set(0);
   }
+
+  //--- BEGIN IMPORTS OF IMU FUNCTIONS FROM TEAM 2168 GIT PROJECT
+  /**
+	 * The heading of the sensor (x axis) in continuous format. Eg rotating the
+	 *   sensor clockwise two full rotations will return a value of 720 degrees.
+	 *
+	 * @return heading in degrees
+     */
+    public double getHeading() {
+    	return imu.getHeading();
+    }
+    
+    /**
+     * Gets a vector representing the sensors position (heading, roll, pitch).
+	 * heading:    0 to 360 degrees
+	 * roll:     -90 to +90 degrees
+	 * pitch:   -180 to +180 degrees
+	 *
+	 * For continuous rotation heading (doesn't roll over between 360/0) see
+	 *   the getHeading() method.
+	 *
+	 * @return a vector [heading, roll, pitch]
+	 */
+    public double[] getVector() {
+    	return imu.getVector();
+    }
+    
+	/**
+	 * @return true if the IMU is found on the I2C bus
+	 */
+	public boolean isSensorPresent() {
+		return imu.isSensorPresent();
+	}
+
+	/** 
+	 * @return true when the IMU is initialized.
+	 */
+	public boolean isInitialized() {
+		return imu.isInitialized();
+	}
+	
+	/**
+	 * Gets current IMU calibration state.
+	 * @return each value will be set to 0 if not calibrated, 3 if fully
+	 *   calibrated.
+	 */
+	public BNO055.CalData getCalibration() {
+		return imu.getCalibration();
+	}
+	
+	/**
+	 * Returns true if all required sensors (accelerometer, magnetometer,
+	 *   gyroscope) in the IMU have completed their respective calibration
+	 *   sequence.
+	 * @return true if calibration is complete for all sensors required for the
+	 *   mode the sensor is currently operating in. 
+	 */
+	public boolean isCalibrated() {
+		return imu.isCalibrated();
+	}
+
   public void log() {
     counter ++;
     if (Math.floorMod(counter, 10) == 0) {

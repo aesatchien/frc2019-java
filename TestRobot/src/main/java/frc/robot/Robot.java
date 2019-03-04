@@ -148,5 +148,6 @@ public class Robot extends TimedRobot {
   public void log(){
     drivetrain.log();
     elevator.log();
+    pneumatics.log();
   }
 }

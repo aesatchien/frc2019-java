@@ -9,12 +9,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
 
 /**
  * Add your docs here.
@@ -29,9 +31,17 @@ public class Pneumatics extends Subsystem {
   private DoubleSolenoid backSolenoid = new DoubleSolenoid(3, 4);
   private TalonSRX pneumaticTalon = new TalonSRX(6);
   private VictorSPX pneumaticVictor = new VictorSPX(7);
+  private boolean bFrontHigh;
+  private boolean bBackHigh;
+  private int counter;
+  private double tilt;
+  private double pitch;
+  private double yaw;
+  private final double frontTiltLimit = 3.0;
+  private final double backTiltLimit = 3.0;
+  private double tiltOffset = -1.4;
   
-
-  @Override
+    @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
@@ -50,15 +60,29 @@ public class Pneumatics extends Subsystem {
     backSolenoid.set(DoubleSolenoid.Value.kOff);
     //shifter.set(DoubleSolenoid.Value.kOff);
   }
-  public void solenoidForward(){
-    frontSolenoid.set(DoubleSolenoid.Value.kForward); //may need a delay here 
-    backSolenoid.set(DoubleSolenoid.Value.kForward);
+  public void raiseRobot(){
+    //tilt = (Robot.drivetrain.getVector())[1];
+    if (bFrontHigh) {
+      frontSolenoid.set(DoubleSolenoid.Value.kOff);
+      backSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+    else if (bBackHigh) {
+      frontSolenoid.set(DoubleSolenoid.Value.kForward);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+    }
+    else {
+      frontSolenoid.set(DoubleSolenoid.Value.kForward);
+      backSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
   }
   public void solenoidReverse(){  
     frontSolenoid.set(DoubleSolenoid.Value.kReverse);
     backSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
   
+  public void set_tiltOffset(){
+    //tiltOffset= (Robot.drivetrain.getVector())[1];
+  }
   public void highGear(){
     shifter.set(true);
   }
@@ -71,6 +95,16 @@ public class Pneumatics extends Subsystem {
   }
   public void log(){
     //SmartDashboard.putBoolean("Talon Limit", pneumaticTalon.)
+    counter ++;
+    
+    if (Math.floorMod(counter, 10) == 0) {
+      tilt = (Robot.drivetrain.getVector())[1] - tiltOffset;
+      bFrontHigh = (tilt > frontTiltLimit);
+      bBackHigh = (tilt < -backTiltLimit);
+      SmartDashboard.putBoolean("Front High", bFrontHigh);
+      SmartDashboard.putBoolean("Back High", bBackHigh);
+      SmartDashboard.putNumber("Tilt", tilt);
+    }
   }
 
 }

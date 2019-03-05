@@ -7,9 +7,10 @@ Started 1/27/2019 CJH
 
 ## Installation
 
-To install the current release download the latest release of the repository either by zip or using git clone.
+To install the current code download the latest release of the repository either by zip or using git clone (it's the green button up top).
+Then you can open up the folder in MS Visual Code, which can be gotten from https://wpilib.screenstepslive.com/s/currentCS/m/java/l/1027503-installing-c-and-java-development-tools-for-frc
 
 ### git-bash shell
 
 Download git-scm from https://git-scm.com/. Install on your system and you will then have access
-to the git-bash shell which is better than the command line.
+to the git-bash shell which is better than the command line.  You only need this if you want to contribute changes from home.

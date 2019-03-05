@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.spartanutils.BNO055;
 import frc.robot.spartanutils.BNO055.CalData;
 import frc.robot.spartanutils.BNO055.reg_t;
+import java.lang.Math;
+import edu.wpi.first.wpilibj.Timer;
 
 
 /**
@@ -49,6 +51,7 @@ public class Drivetrain extends Subsystem {
   public final Gyro driveGyro = new ADXRS450_Gyro();
   private final double twistSensitivity = -0.5;
   private int counter;
+  private double badTiltValue = 0;
 
   public Drivetrain() {
     super();
@@ -133,18 +136,65 @@ public class Drivetrain extends Subsystem {
 	 */
 	public boolean isCalibrated() {
 		return imu.isCalibrated();
-	}
+  }
+  
+  // IMU keeps giving a bad value that messes up the raiseRobot routine
+  // Try to find two bad values and then save it
+  public double findBadValue() {
+    System.out.println("Starting to look for bad values...");
+    double badValue = 0;
+    double[] pos = {0,0,0};
+    double[] oldpos = {0,0,0};
+    int i=0;
+    double tolerance = 0.001;
+    boolean bFoundBadValue = false;
+
+    oldpos = getVector();
+    System.out.println("Initial value: "+  oldpos[1]);
+    for (i = 0; i < 1000; i++){
+      pos= getVector();
+      System.out.println("Pos1 at iteration " + i + ": " +  pos[1]);
+      //Find it the first time
+      if (!bFoundBadValue && Math.abs(oldpos[1]-pos[1]) > tolerance){
+        badValue = pos[1];
+        bFoundBadValue = true;
+        System.out.println("Candidate bad value: "+  badValue + " at iteration "+ i );
+      }
+      //double check and restart - we got unlucky and the first value was the bad one
+      else if (bFoundBadValue && Math.abs(oldpos[1]-pos[1]) > tolerance){
+        if(Math.abs(badValue- pos[1])< tolerance){
+          //found the bad value twice - doesn't work if you get two bads in a row
+          System.out.println("Verified bad value: "+  badValue + " at iteration "+ i );
+          break;
+        }
+        else{
+          //unluckily found the bad value the first time and now we have it again
+          System.out.println("Mistaken bad value: "+  badValue + " at iteration "+ i + " ... Restarting...");
+          badValue = oldpos[1];
+
+        }
+      }
+      oldpos = pos;
+      Timer.delay(0.01);
+    }
+    badTiltValue = badValue;
+    return badValue;
+  }
+  public double getBadTilt(){
+    return badTiltValue;
+  }
 
   public void log() {
     counter ++;
     if (Math.floorMod(counter, 10) == 0) {
       SmartDashboard.putNumber("Position Enc1", 0.1*Math.round(10*SparkNeoEncoder1.getPosition()));
       SmartDashboard.putNumber("Velocity Enc1", 0.1*Math.round(10*SparkNeoEncoder1.getVelocity()));
-      SmartDashboard.putNumber("Position Enc2", 0.1*Math.round(10*SparkNeoEncoder2.getPosition()));
+      //SmartDashboard.putNumber("Position Enc2", 0.1*Math.round(10*SparkNeoEncoder2.getPosition()));
       SmartDashboard.putNumber("Position Enc3", 0.1*Math.round(10*SparkNeoEncoder3.getPosition()));
       SmartDashboard.putNumber("Velocity Enc3", 0.1*Math.round(10*SparkNeoEncoder3.getVelocity()));
-      SmartDashboard.putNumber("Position Enc4", Math.round(SparkNeoEncoder4.getPosition()));
-      SmartDashboard.putNumber("DriveGyro", Math.round(driveGyro.getAngle()));
+      //SmartDashboard.putNumber("Position Enc4", Math.round(SparkNeoEncoder4.getPosition()));
+      SmartDashboard.putNumber("DriveGyro", 0.1*Math.round(10*driveGyro.getAngle()));
+      //SmartDashboard.putNumber("BadTiltValue", getBadTilt());
     }
   }
 }

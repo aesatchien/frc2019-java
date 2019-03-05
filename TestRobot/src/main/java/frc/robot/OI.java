@@ -79,8 +79,6 @@ public class OI {
     axisButtonLT = new AxisButton(stick, 2);
     axisButtonRT = new AxisButton(stick, 3);
 
-
-
     //buttonA.whenPressed(new Command_SetSparkMax(0.0, buttonA));
     //buttonB.whenPressed(new Command_SetSparkMax(0.1, buttonB));
     //buttonX.whenPressed(new Command_SetSparkMax(-0.1, buttonX));
@@ -90,13 +88,19 @@ public class OI {
     buttonB.whenPressed(new Command_RaiseRobot(buttonB));
     // -1 is retract (rev)
     buttonX.whenPressed(new Command_SetSolenoid(-1,buttonX));
-    buttonLB.whenPressed(new SetElevator(-0.3,buttonLB));
-    buttonRB.whenPressed(new SetElevator(0.5,buttonRB));
     buttonBack.whenPressed(new Command_SetSolenoid(5,buttonBack));
     buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
-    povButtonUp.whenPressed(new SetElevator(-0.3, povButtonUp));
-    povButtonDown.whenPressed(new SetElevator(0.75, povButtonDown));
+    //Intake in and out - negative (left at the moment) is out, right is in
+    povButtonLeft.whenPressed(new Command_SetIntake(-0.75, povButtonLeft));
+    povButtonRight.whenPressed(new Command_SetIntake(0.3, povButtonRight));
+    //Elevator with variable speed
     axisButtonLT.whenPressed(new SetElevator(-0.3,axisButtonLT,2));
     axisButtonRT.whenPressed(new SetElevator(0.3,axisButtonRT,3));
+    //Elevator fixed speed - testing buttons
+    buttonLB.whenPressed(new SetElevator(-0.3,buttonLB));
+    buttonRB.whenPressed(new SetElevator(0.5,buttonRB));
+    //Set Wrist - negative is up 
+    povButtonUp.whenPressed(new Command_SetWrist(-0.6, povButtonUp));
+    povButtonDown.whenPressed(new Command_SetWrist(0.2, povButtonDown));
   }
 }

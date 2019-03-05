@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import java.lang.Math;
 
 
 /**
@@ -39,8 +40,8 @@ public class Pneumatics extends Subsystem {
   private double yaw;
   private final double frontTiltLimit = 3.0;
   private final double backTiltLimit = 3.0;
-  private double tiltOffset = -1.4;
-  
+  private double tiltOffset = 0;
+  private int badTilts = 0;
     @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -61,12 +62,12 @@ public class Pneumatics extends Subsystem {
     //shifter.set(DoubleSolenoid.Value.kOff);
   }
   public void raiseRobot(){
-    //tilt = (Robot.drivetrain.getVector())[1];
-    if (bFrontHigh) {
+    tilt = Robot.drivetrain.driveGyro.getAngle();
+    if (tilt < - frontTiltLimit ) {
       frontSolenoid.set(DoubleSolenoid.Value.kOff);
       backSolenoid.set(DoubleSolenoid.Value.kForward);
     }
-    else if (bBackHigh) {
+    else if (tilt > backTiltLimit) {
       frontSolenoid.set(DoubleSolenoid.Value.kForward);
       backSolenoid.set(DoubleSolenoid.Value.kOff);
     }
@@ -98,12 +99,23 @@ public class Pneumatics extends Subsystem {
     counter ++;
     
     if (Math.floorMod(counter, 10) == 0) {
-      tilt = (Robot.drivetrain.getVector())[1] - tiltOffset;
-      bFrontHigh = (tilt > frontTiltLimit);
-      bBackHigh = (tilt < -backTiltLimit);
+      
+      //if (Math.abs(pos[1]-Robot.drivetrain.getBadTilt())<0.0001){badTilts++;}
+      //else {tilt = pos[1] - tiltOffset;}
+      double[] pos = Robot.drivetrain.getVector();
+      double heading = Robot.drivetrain.getHeading();
+      double tilt = Robot.drivetrain.driveGyro.getAngle();
+      bFrontHigh = (tilt < -frontTiltLimit);
+      bBackHigh = (tilt > backTiltLimit);
       SmartDashboard.putBoolean("Front High", bFrontHigh);
       SmartDashboard.putBoolean("Back High", bBackHigh);
       SmartDashboard.putNumber("Tilt", tilt);
+      //SmartDashboard.putNumber("Tilt Errors", badTilts);
+      SmartDashboard.putNumber("X", pos[0]);
+      SmartDashboard.putNumber("Y", pos[1]);
+      SmartDashboard.putNumber("Z", pos[2]);
+      SmartDashboard.putNumber("Heading", heading);
+
     }
   }
 

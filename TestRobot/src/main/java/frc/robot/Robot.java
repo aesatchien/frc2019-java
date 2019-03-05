@@ -29,6 +29,8 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static Pneumatics pneumatics;
   public static Elevator elevator;
+  public static Intake intake;
+  public static Wrist wrist;
   public static OI oi;
   public static double enabledTime = 0;
   Command m_autonomousCommand;
@@ -44,6 +46,8 @@ public class Robot extends TimedRobot {
       drivetrain = new Drivetrain();
       elevator = new Elevator();
       pneumatics = new Pneumatics();
+      intake = new Intake();
+      wrist = new Wrist();
       oi = new OI();  //oi must be last!!!  otherwise the commands start nulls
       m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());

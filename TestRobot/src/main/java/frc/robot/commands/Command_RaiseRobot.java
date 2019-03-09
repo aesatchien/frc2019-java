@@ -81,7 +81,7 @@ public class Command_RaiseRobot extends Command {
   //     + "  H: " + Robot.drivetrain.getHeading());
   // }
     Robot.pneumatics.raiseRobot();
-    Timer.delay(0.1);
+    Timer.delay(0.05);
   }
 
   // Make this return true when this Command no longer needs to run execute()

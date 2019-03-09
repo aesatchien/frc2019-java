@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.Command_ElevatorDefault;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -39,10 +40,19 @@ public Elevator(){
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+
+    setDefaultCommand(new Command_ElevatorDefault());
+    
   }
 
   public void setElevatorSpeed(double speed) {
       PWMSpark.set(speed);
+  }
+  //public void defaultElevator() {
+  // PWMSpark.set(0.5);
+  //}
+  public boolean isElevatorLow(){
+    return !elevatorLimitLow.get();
   }
 
   public void log() {

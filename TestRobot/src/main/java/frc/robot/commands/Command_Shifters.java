@@ -11,16 +11,16 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.buttons.*;
 
-public class Command_SetSolenoid extends Command {
+public class Command_Shifters extends Command {
   int state;
   JoystickButton button;
   
-  public Command_SetSolenoid() {
+  public Command_Shifters() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.pneumatics);
   }
-  public Command_SetSolenoid(int state, JoystickButton button) {
+  public Command_Shifters(int state, JoystickButton button) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this();
@@ -30,13 +30,9 @@ public class Command_SetSolenoid extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (state ==0) {Robot.pneumatics.compressorToggle();}
-    //if (state ==2) {Robot.pneumatics.compressorOn();}
-    //if (state ==1) {Robot.pneumatics.raiseRobot();}
-    if (state ==-1) {Robot.pneumatics.solenoidReverse();}
-    //if (state ==3) {Robot.pneumatics.highGear();}
-    //if (state ==4) {Robot.pneumatics.lowGear();}
-    if (state ==5) {Robot.pneumatics.solenoidOff();}    
+    if (state ==0) {Robot.pneumatics.lowGear();}
+    if (state ==1) {Robot.pneumatics.highGear();}
+        
   }
 
   // Called repeatedly when this Command is scheduled to run

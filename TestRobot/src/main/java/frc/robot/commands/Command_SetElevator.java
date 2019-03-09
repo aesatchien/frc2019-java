@@ -15,16 +15,23 @@ import frc.robot.spartanutils.AxisButton;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class Command_SetWrist extends Command {
+public class Command_SetElevator extends Command {
   private double speed;
   int axis;
   Button button;
   boolean bAxisButton; 
-  public Command_SetWrist() {
+  public Command_SetElevator() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.wrist);
+    requires(Robot.elevator);
   }
-  public Command_SetWrist(double speed,Button button) {
+
+  public Command_SetElevator(double speed) {
+    // Use requires() here to declare subsystem dependencies
+   this();
+   this.speed = speed;
+  }
+  
+  public Command_SetElevator(double speed,Button button) {
     // Use requires() here to declare subsystem dependencies
    this();
    this.speed = speed;
@@ -33,7 +40,7 @@ public class Command_SetWrist extends Command {
    axis=0;
   }
 
-  public Command_SetWrist(double speed, AxisButton button, int axis) {
+  public Command_SetElevator(double speed, AxisButton button, int axis) {
     // Use requires() here to declare subsystem dependencies
    this();
    this.speed = speed;
@@ -51,7 +58,11 @@ public class Command_SetWrist extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.wrist.setWristSpeed(speed);
+    if (bAxisButton){
+      if(axis==3){speed=Robot.oi.stick.getRawAxis(axis);}
+      if(axis==2){speed=-0.5*Robot.oi.stick.getRawAxis(axis);}
+    }
+    Robot.elevator.setElevatorSpeed(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -63,7 +74,7 @@ public class Command_SetWrist extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.wrist.setWristSpeed(0);
+    Robot.elevator.setElevatorSpeed(0);
     System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 
@@ -71,7 +82,7 @@ public class Command_SetWrist extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.wrist.setWristSpeed(0);
+    Robot.elevator.setElevatorSpeed(0);
     System.out.println("\nInterrupted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 }

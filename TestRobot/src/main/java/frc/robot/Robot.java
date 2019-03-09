@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Timer;
@@ -31,6 +29,7 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Intake intake;
   public static Wrist wrist;
+  public static Navigation navigation;
   public static OI oi;
   public static double enabledTime = 0;
   Command m_autonomousCommand;
@@ -48,9 +47,10 @@ public class Robot extends TimedRobot {
       pneumatics = new Pneumatics();
       intake = new Intake();
       wrist = new Wrist();
+      navigation = new Navigation();
       oi = new OI();  //oi must be last!!!  otherwise the commands start nulls
-      m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
-    // chooser.addOption("My Auto", new MyAutoCommand());
+    //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+    //chooser.addOption("My Auto", new MyAutoCommand());
     //SmartDashboard.putData("Auto mode", m_chooser);
   }
 
@@ -74,12 +74,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    pneumatics.lowGear();
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
-    log();
+    //log();
   }
 
   /**
@@ -116,7 +117,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    log();
+    //log();
   }
 
   @Override
@@ -129,7 +130,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    log();
+    pneumatics.compressorOff();
+    // This should set the compressor to off
+    drivetrain.driveGyro.reset();
   }
 
   /**
@@ -138,7 +141,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    log();
+    //log();
   }
 
   /**
@@ -146,12 +149,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    log();
+    //log();
   }
 
   public void log(){
     drivetrain.log();
     elevator.log();
     pneumatics.log();
+    navigation.log();
   }
 }

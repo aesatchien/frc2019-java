@@ -34,14 +34,12 @@ public class Pneumatics extends Subsystem {
   private VictorSPX pneumaticVictor = new VictorSPX(7);
   private boolean bFrontHigh;
   private boolean bBackHigh;
+  private boolean bCompressorOn=false;
   private int counter;
   private double tilt;
-  private double pitch;
-  private double yaw;
   private final double frontTiltLimit = 3.0;
   private final double backTiltLimit = 3.0;
-  private double tiltOffset = 0;
-  private int badTilts = 0;
+
     @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -49,11 +47,23 @@ public class Pneumatics extends Subsystem {
   }
   public void compressorOff(){
     compressor.setClosedLoopControl(false);
-    //compressor.stop();
+    bCompressorOn=false;
   }
   public void compressorOn(){
     compressor.setClosedLoopControl(true);
-    //compressor.start();
+    bCompressorOn=true;
+  }
+  public void compressorToggle(){
+
+    if(bCompressorOn){
+      compressor.setClosedLoopControl(false);
+      bCompressorOn=false;
+    }
+    else{
+      compressor.setClosedLoopControl(true);
+      bCompressorOn=true;  
+    }
+
   }
   public void solenoidOff(){
     shifter.set(false);
@@ -85,36 +95,28 @@ public class Pneumatics extends Subsystem {
     //tiltOffset= (Robot.drivetrain.getVector())[1];
   }
   public void highGear(){
-    shifter.set(true);
+    shifter.set(false);
   }
   public void lowGear(){
-    shifter.set(false);
+    shifter.set(true);
   }
   public void pneumaticDrive(double speed){
     pneumaticTalon.set(ControlMode.PercentOutput, speed);
     pneumaticVictor.set(ControlMode.PercentOutput, -1.0*speed);
   }
   public void log(){
-    //SmartDashboard.putBoolean("Talon Limit", pneumaticTalon.)
     counter ++;
     
     if (Math.floorMod(counter, 10) == 0) {
       
-      //if (Math.abs(pos[1]-Robot.drivetrain.getBadTilt())<0.0001){badTilts++;}
-      //else {tilt = pos[1] - tiltOffset;}
-      double[] pos = Robot.drivetrain.getVector();
-      double heading = Robot.drivetrain.getHeading();
       double tilt = Robot.drivetrain.driveGyro.getAngle();
       bFrontHigh = (tilt < -frontTiltLimit);
       bBackHigh = (tilt > backTiltLimit);
       SmartDashboard.putBoolean("Front High", bFrontHigh);
       SmartDashboard.putBoolean("Back High", bBackHigh);
-      SmartDashboard.putNumber("Tilt", tilt);
-      //SmartDashboard.putNumber("Tilt Errors", badTilts);
-      SmartDashboard.putNumber("X", pos[0]);
-      SmartDashboard.putNumber("Y", pos[1]);
-      SmartDashboard.putNumber("Z", pos[2]);
-      SmartDashboard.putNumber("Heading", heading);
+      SmartDashboard.putBoolean("Compressor", bCompressorOn);
+      SmartDashboard.putNumber("Tilt", 0.01 * Math.round(100 * tilt));
+      SmartDashboard.putBoolean("Compressor", bCompressorOn);
 
     }
   }

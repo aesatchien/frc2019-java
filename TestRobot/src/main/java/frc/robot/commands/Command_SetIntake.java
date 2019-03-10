@@ -45,7 +45,7 @@ public class Command_SetIntake extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
+    System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") and button value: "+ Robot.oi.stick.getPOV(0) +" at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 
   // Called repeatedly when this Command is scheduled to run

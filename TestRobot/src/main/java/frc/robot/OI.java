@@ -85,6 +85,7 @@ public class OI {
     buttonY.whenPressed(new Command_SetSolenoid(0,buttonY));
     // 1 if extend (fwd)
     //buttonB.whenPressed(new Command_RaiseRobot(buttonB));
+    buttonB.whenPressed(new Command_SetIntake(-0.2, buttonB));
     // -1 is retract (rev)
     buttonX.whenPressed(new Command_SetSolenoid(-1,buttonX));
     // turn off the solenoids (maintain pressure)
@@ -92,8 +93,8 @@ public class OI {
     
     buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
     //Intake in and out - negative (left at the moment) is out, right is in
-    povButtonLeft.whenPressed(new Command_SetIntake(-0.75, povButtonLeft));
-    povButtonRight.whenPressed(new Command_SetIntake(0.5, povButtonRight));
+    povButtonLeft.whenPressed(new Command_SetIntake(-0.2, povButtonLeft));
+    povButtonRight.whenPressed(new Command_SetIntake(0.3, povButtonRight));
     //Elevator with variable speed
     axisButtonLT.whenPressed(new Command_SetElevator(-0.3,axisButtonLT,2));
     axisButtonRT.whenPressed(new Command_SetElevator(0.3,axisButtonRT,3));
@@ -101,10 +102,10 @@ public class OI {
     buttonLB.whenPressed(new Command_Shifters(0, buttonLB)); //low gear
     buttonRB.whenPressed(new Command_Shifters(1, buttonRB)); //high gear
     //Set Wrist - fixed the directions, motor has to be inverted
-    //povButtonUp.whenPressed(new Command_SetWrist(0.35, povButtonUp));
-    //povButtonDown.whenPressed(new Command_SetWrist(-.1, povButtonDown));
+    //povButtonUp.whenPressed(new Command_SetWrist(1.0, povButtonUp));
+    //povButtonDown.whenPressed(new Command_SetWrist(-1.0, povButtonDown));
     //Set Elevator PID - fixed the directions, motor has to be inverted
-    povButtonUp.whenPressed(new Command_SetElevatorHeightPID(5.0));
-    povButtonDown.whenPressed(new Command_SetElevatorHeightPID(-5.0));
+    povButtonUp.whenPressed(new Command_SetElevatorHeightPID(5.0,povButtonUp));
+    povButtonDown.whenPressed(new Command_SetElevatorHeightPID(-5.0,povButtonDown));
   }
 }

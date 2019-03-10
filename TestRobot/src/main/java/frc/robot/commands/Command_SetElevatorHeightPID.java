@@ -12,9 +12,6 @@ import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * An example command.  You can replace me with your own command.
- */
 public class Command_SetElevatorHeightPID extends Command {
   private double deltaHeight;
   Button button;
@@ -22,10 +19,14 @@ public class Command_SetElevatorHeightPID extends Command {
   double kp = 0.15;
   double ki = 0.001;
   double kf = 0.25;
-  double kerror = 0;
+  double kd = 0.25;
+  double kierror = 0;
+  double kderror = 0;
+  double previouserror = 0;
   double error=0;
   double tolerance = 1.0;
-  double maxPower = 0.6;
+  final double MAXPOWER = 0.55;
+  final double MINPOWER = 0.1;
   double counter = 0;
 
   public Command_SetElevatorHeightPID() {
@@ -50,8 +51,10 @@ public class Command_SetElevatorHeightPID extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.deltaHeight) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
+    System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.deltaHeight) +") and button value: "+ Robot.oi.stick.getPOV(0) +" at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
     Robot.elevator.setElevatorSetpoint(Robot.elevator.getElevatorHeight() +  deltaHeight);
+    previouserror = 0;
+    error=0;
     //Robot.elevator.setElevatorSetpoint(deltaHeight);
   }
 
@@ -59,15 +62,26 @@ public class Command_SetElevatorHeightPID extends Command {
   @Override
   protected void execute() {
       double elevatorPower;
+      double increment = 0.1;
+      //increase the setpoint if button is held down ... kind of a cheat
+      if (!button.get()){
+        Robot.elevator.setElevatorSetpoint(Robot.elevator.getElevatorSetpoint() +  Math.signum(deltaHeight)*increment);
+      }
       counter = counter +1;
       error = Robot.elevator.getElevatorSetpoint()- Robot.elevator.getElevatorHeight();
-      kerror = kerror + ki + error * counter;
-      elevatorPower= kf + kp*error + kerror;
+      kierror = kierror + ki + error * counter;
+      kderror = kd* (error-previouserror);
+      elevatorPower= kf + kp*error + kierror;
       if (Robot.elevator.getElevatorSetpoint() <= 0){
         elevatorPower=0;
         Robot.elevator.setElevatorSetpoint(0);
+        //Robot.elevator.setElevatorPower(0);
       }
-      Robot.elevator.setElevatorPower(Math.min(maxPower,elevatorPower));
+      else{
+        // make sure we never go lower than minimum power and higher than maximum power
+        Robot.elevator.setElevatorPower(Math.max(MINPOWER, Math.min(MAXPOWER,elevatorPower)));
+      }
+      previouserror = error;
       SmartDashboard.putNumber("Elevator Error", error);
       //Timer.delay(0.05);
 

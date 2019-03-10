@@ -45,15 +45,21 @@ public class Command_SetWrist extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
+    System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") and button value: "+ Robot.oi.stick.getPOV(0) +" at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.wrist.setWristPower(speed);
+    //Robot.wrist.setWristPower(speed);
     //Robot.wrist.moveWrist(speed);
+    double currentSP = Robot.wrist.getWristSetpoint();
+    double delta = 100;
+    if (speed > 0){ Robot.wrist.setPosition(currentSP + delta); }
+    else if (speed <= 0.0){ Robot.wrist.setPosition(currentSP - delta); }
+    //else {Robot.wrist.setVelocity(0);}
   }
+
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
@@ -64,7 +70,8 @@ public class Command_SetWrist extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.wrist.setWristPower(0);
+    //Robot.wrist.setWristPower(0);
+    //Robot.wrist.setVelocity(0);
     System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 
@@ -72,7 +79,8 @@ public class Command_SetWrist extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.wrist.setWristPower(0);
+    //Robot.wrist.setWristPower(0);
+    //Robot.wrist.setVelocity(0);
     System.out.println("\nInterrupted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 }

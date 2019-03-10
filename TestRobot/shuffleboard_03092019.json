@@ -21,7 +21,7 @@
               "_title": "DriveGyro"
             }
           },
-          "7,5": {
+          "8,6": {
             "size": [
               1,
               1
@@ -48,7 +48,7 @@
               "Visuals/Show text": true
             }
           },
-          "4,3": {
+          "0,5": {
             "size": [
               2,
               2
@@ -68,17 +68,6 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator Distance",
               "_title": "Elevator Distance"
-            }
-          },
-          "8,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Tilt Errors",
-              "_title": "Tilt Errors"
             }
           },
           "4,1": {
@@ -107,7 +96,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,5": {
+          "8,4": {
             "size": [
               2,
               1
@@ -131,7 +120,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,4": {
+          "8,3": {
             "size": [
               2,
               1
@@ -155,7 +144,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "4,5": {
+          "8,5": {
             "size": [
               1,
               1
@@ -166,7 +155,7 @@
               "_title": "X"
             }
           },
-          "6,5": {
+          "9,6": {
             "size": [
               1,
               1
@@ -199,7 +188,7 @@
               "_title": "Position Enc1"
             }
           },
-          "5,5": {
+          "9,5": {
             "size": [
               1,
               1
@@ -208,6 +197,72 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Y",
               "_title": "Y"
+            }
+          },
+          "6,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Power",
+              "_title": "Elevator Power"
+            }
+          },
+          "4,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Setpoint",
+              "_title": "Elevator Setpoint"
+            }
+          },
+          "4,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Error",
+              "_title": "Elevator Error"
+            }
+          },
+          "2,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Wrist Talon",
+              "_title": "Wrist Talon"
+            }
+          },
+          "2,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Wrist Velocity",
+              "_title": "Wrist Velocity"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Wrist Current",
+              "_title": "Wrist Current"
             }
           }
         }
@@ -370,9 +425,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 131.0,
-    "y": 48.0,
-    "width": 1625.0,
+    "x": 36.0,
+    "y": 13.0,
+    "width": 940.0,
     "height": 786.0
   }
 }

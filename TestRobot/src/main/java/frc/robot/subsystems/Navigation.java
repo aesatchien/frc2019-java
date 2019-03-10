@@ -149,7 +149,7 @@ public class Navigation extends Subsystem {
      //else {tilt = pos[1] - tiltOffset;}
      double[] pos = getVector();
      double heading = getHeading();
-     SmartDashboard.putNumber("Tilt Errors", badTilts);
+     //SmartDashboard.putNumber("Tilt Errors", badTilts);
      SmartDashboard.putNumber("X", pos[0]);
      SmartDashboard.putNumber("Y", pos[1]);
      SmartDashboard.putNumber("Z", pos[2]);

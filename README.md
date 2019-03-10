@@ -14,3 +14,4 @@ Then you can open up the folder in MS Visual Code, which can be gotten from http
 
 Download git-scm from https://git-scm.com/. Install on your system and you will then have access
 to the git-bash shell which is better than the command line.  You only need this if you want to contribute changes from home.
+https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html is good for quick basics.  

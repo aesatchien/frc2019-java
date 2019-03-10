@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.spartanutils.BNO055;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
+
 /**
  * Add your docs here.
  */
@@ -19,9 +19,9 @@ public class Navigation extends Subsystem {
   private static BNO055 imu;
   private double badTiltValue = 0;
   int counter = 0;
-  private double pitch;
-  private double yaw;
-  private double tiltOffset = 0;
+  //private double pitch;
+  //private double yaw;
+  //private double tiltOffset = 0;
   private int badTilts = 0;
   // Put methods for controlling this subsystem
   // here. Call these from Commands.

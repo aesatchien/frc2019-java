@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANEncoder;
+//import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,19 +35,17 @@ public class Drivetrain extends Subsystem {
   private final SpeedControllerGroup speedGroupRight = new SpeedControllerGroup(sparkNeoR3, sparkNeoR4);
   private final DifferentialDrive  differentialDrive = new DifferentialDrive(speedGroupLeft, speedGroupRight);
   private final CANEncoder SparkNeoEncoder1 = sparkNeoL1.getEncoder();
-  private final CANEncoder SparkNeoEncoder2 = sparkNeoL2.getEncoder();
   private final CANEncoder SparkNeoEncoder3 = sparkNeoR3.getEncoder();
-  private final CANEncoder SparkNeoEncoder4 = sparkNeoR4.getEncoder();
-
   public final Gyro driveGyro = new ADXRS450_Gyro();
   private final double twistSensitivity = -0.5;
   private int counter;
-
+	// Used to make robot accelerate smoother - grinding it
+	private static double currentThrust = 0, currentTwist = 0;
+	private static double accelerationLimit = 0.2;
 
   public Drivetrain() {
     super();
- 
-  }
+   }
 
   @Override
   public void initDefaultCommand() {
@@ -55,13 +53,38 @@ public class Drivetrain extends Subsystem {
     setDefaultCommand(new DriveByJoystick());
   }
   public void SparkWithStick(double xSpeed, double zRotation) { 	
-    
     differentialDrive.arcadeDrive(xSpeed, twistSensitivity*zRotation, false);
+    //Do we need to do different things when we are fast/slow?
     if (xSpeed >0.5){
        //Digital0.set(true);
     }
-    //else {Digital0.set(false);}
   }
+
+  public void smoothDrive(double thrust, double twist) {
+		//Xbox joysticks are notoriously bad at keeping themselves calibrated to better than 0.1.  
+		double deadzone = 0.02;
+		if (Math.abs(thrust) < deadzone)
+			currentThrust = 0;
+		else {
+			if (Math.abs(thrust - currentThrust) < accelerationLimit)
+				currentThrust = thrust;
+			else
+				currentThrust = (thrust - currentThrust > 0) ? currentThrust + accelerationLimit : currentThrust - accelerationLimit;
+		}
+
+		if (Math.abs(twist) < deadzone)
+			currentTwist = 0;
+		else {
+			if (Math.abs(twist - currentTwist) < accelerationLimit)
+				currentTwist = twist;
+			else
+				currentTwist = (twist - currentTwist > 0) ? currentTwist + accelerationLimit
+						: currentTwist - accelerationLimit;
+		}
+    //Implement a speed limit if necessary
+		//currentThrust = Math.signum(currentThrust)*Math.min(Math.abs(thrustLimit),Math.abs(currentThrust));
+		differentialDrive.arcadeDrive(currentThrust, currentTwist, true);
+	}
 
   public void setVelocity(double velocity){
     sparkNeoL1.set(velocity);
@@ -69,6 +92,7 @@ public class Drivetrain extends Subsystem {
 
   public void reset(){
     //sparkNeoL1.set(0);
+    driveGyro.reset();
   }
 
   
@@ -81,7 +105,7 @@ public class Drivetrain extends Subsystem {
       SmartDashboard.putNumber("Position Enc3", 0.1*Math.round(10*SparkNeoEncoder3.getPosition()));
       SmartDashboard.putNumber("Velocity Enc3", 0.1*Math.round(10*SparkNeoEncoder3.getVelocity()));
       //SmartDashboard.putNumber("Position Enc4", Math.round(SparkNeoEncoder4.getPosition()));
-      SmartDashboard.putNumber("DriveGyro", 0.1*Math.round(10*driveGyro.getAngle()));
+      SmartDashboard.putNumber("DriveGyro", 0.01*Math.round(100*driveGyro.getAngle()));
       //SmartDashboard.putNumber("BadTiltValue", getBadTilt());
     }
   }

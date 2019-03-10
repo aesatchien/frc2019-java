@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.buttons.*;
 import java.text.DecimalFormat;
-
-import javax.naming.InitialContext;
-
 import frc.robot.spartanutils.BNO055;
 
 public class Command_RaiseRobot extends Command {

@@ -79,14 +79,17 @@ public class OI {
     axisButtonLT = new AxisButton(stick, 2);
     axisButtonRT = new AxisButton(stick, 3);
 
-    //buttonA.whenPressed(new Command_SetSolenoid(0,buttonA));
+    // Toggle hatch
+    buttonA.whenPressed(new Command_SetSolenoid(2,buttonA));
     // Toggle Solenoid
     buttonY.whenPressed(new Command_SetSolenoid(0,buttonY));
     // 1 if extend (fwd)
-    buttonB.whenPressed(new Command_RaiseRobot(buttonB));
+    //buttonB.whenPressed(new Command_RaiseRobot(buttonB));
     // -1 is retract (rev)
     buttonX.whenPressed(new Command_SetSolenoid(-1,buttonX));
+    // turn off the solenoids (maintain pressure)
     buttonBack.whenPressed(new Command_SetSolenoid(5,buttonBack));
+    
     buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
     //Intake in and out - negative (left at the moment) is out, right is in
     povButtonLeft.whenPressed(new Command_SetIntake(-0.75, povButtonLeft));
@@ -97,8 +100,8 @@ public class OI {
     //Elevator fixed speed - testing buttons
     buttonLB.whenPressed(new Command_Shifters(0, buttonLB)); //low gear
     buttonRB.whenPressed(new Command_Shifters(1, buttonRB)); //high gear
-    //Set Wrist - negative is up 
-    povButtonUp.whenPressed(new Command_SetWrist(-0.5, povButtonUp));
-    povButtonDown.whenPressed(new Command_SetWrist(0.2, povButtonDown));
+    //Set Wrist - fixed the directions, motor has to be inverted
+    povButtonUp.whenPressed(new Command_SetWrist(1, povButtonUp));
+    povButtonDown.whenPressed(new Command_SetWrist(-1, povButtonDown));
   }
 }

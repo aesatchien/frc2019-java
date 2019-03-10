@@ -31,7 +31,7 @@ public class Command_SetSolenoid extends Command {
   @Override
   protected void initialize() {
     if (state ==0) {Robot.pneumatics.compressorToggle();}
-    //if (state ==2) {Robot.pneumatics.compressorOn();}
+    if (state ==2) {Robot.pneumatics.hatchToggle();}
     //if (state ==1) {Robot.pneumatics.raiseRobot();}
     if (state ==-1) {Robot.pneumatics.solenoidReverse();}
     //if (state ==3) {Robot.pneumatics.highGear();}

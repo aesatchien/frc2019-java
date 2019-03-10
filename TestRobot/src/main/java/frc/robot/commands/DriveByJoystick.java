@@ -28,7 +28,10 @@ public class DriveByJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivetrain.SparkWithStick(Robot.oi.stick.getRawAxis(1),Robot.oi.stick.getRawAxis(4));
+    //No acceleration limits
+    //Robot.drivetrain.SparkWithStick(Robot.oi.stick.getRawAxis(1),Robot.oi.stick.getRawAxis(4));
+    //Acceleration limits
+    Robot.drivetrain.smoothDrive(Robot.oi.stick.getRawAxis(1),Robot.oi.stick.getRawAxis(4));
   }
 
   // Make this return true when this Command no longer needs to run execute()

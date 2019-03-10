@@ -26,6 +26,7 @@ public class Pneumatics extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   private Solenoid shifter = new Solenoid(0);
+  private Solenoid hatch = new Solenoid(5);
   private Compressor compressor = new Compressor(0);
   // The syntax is DoubleSolenoid(fwdch, revch);
   private DoubleSolenoid frontSolenoid = new DoubleSolenoid(1, 2);
@@ -35,6 +36,7 @@ public class Pneumatics extends Subsystem {
   private boolean bFrontHigh;
   private boolean bBackHigh;
   private boolean bCompressorOn=false;
+  private boolean bHatchOpen=false;
   private int counter;
   private double tilt;
   private final double frontTiltLimit = 3.0;
@@ -54,7 +56,6 @@ public class Pneumatics extends Subsystem {
     bCompressorOn=true;
   }
   public void compressorToggle(){
-
     if(bCompressorOn){
       compressor.setClosedLoopControl(false);
       bCompressorOn=false;
@@ -63,8 +64,18 @@ public class Pneumatics extends Subsystem {
       compressor.setClosedLoopControl(true);
       bCompressorOn=true;  
     }
-
   }
+  public void hatchToggle(){
+    if(bHatchOpen){
+      hatch.set(false);
+      bHatchOpen=false;
+    }
+    else{
+      hatch.set(true);
+      bHatchOpen=true;  
+    }
+  }
+
   public void solenoidOff(){
     shifter.set(false);
     frontSolenoid.set(DoubleSolenoid.Value.kOff);
@@ -104,6 +115,7 @@ public class Pneumatics extends Subsystem {
     pneumaticTalon.set(ControlMode.PercentOutput, speed);
     pneumaticVictor.set(ControlMode.PercentOutput, -1.0*speed);
   }
+
   public void log(){
     counter ++;
     

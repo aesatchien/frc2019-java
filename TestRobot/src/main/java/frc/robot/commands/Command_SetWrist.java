@@ -51,7 +51,8 @@ public class Command_SetWrist extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.wrist.setWristSpeed(speed);
+    //Robot.wrist.setWristSpeed(speed);
+    Robot.wrist.moveWrist(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

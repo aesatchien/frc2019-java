@@ -23,6 +23,7 @@ public class Elevator extends Subsystem {
   private int counter;
   private final Spark PWMSpark = new Spark(1);
   private final DigitalInput elevatorLimitLow = new DigitalInput(3);
+  //AMT encoder - use the brown on B 1 and white on A on 0 ??
   private Encoder elevatorEncoder = new Encoder(0,1,false, Encoder.EncodingType.k4X);
   double distancePerPulse = 2048;
   
@@ -40,9 +41,7 @@ public Elevator(){
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-
     setDefaultCommand(new Command_ElevatorDefault());
-    
   }
 
   public void setElevatorSpeed(double speed) {
@@ -61,6 +60,8 @@ public Elevator(){
       SmartDashboard.putBoolean("Elevator Bottom", !elevatorLimitLow.get());
       SmartDashboard.putNumber("Elevator Distance", ((int)(100*elevatorEncoder.getDistance()))/100.0);
     }
-    //if (elevatorLimitLow.get()) {elevatorEncoder.reset();}
+   // if (Math.floorMod(counter, 100) == 0) {
+   //   if (isElevatorLow()) {elevatorEncoder.reset();}
+   // }
   }
 }

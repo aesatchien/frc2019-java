@@ -62,7 +62,7 @@ public class Command_SetElevator extends Command {
       if(axis==3){speed=Robot.oi.stick.getRawAxis(axis);}
       if(axis==2){speed=-0.5*Robot.oi.stick.getRawAxis(axis);}
     }
-    Robot.elevator.setElevatorSpeed(speed);
+    Robot.elevator.setElevatorPower(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -74,7 +74,7 @@ public class Command_SetElevator extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.elevator.setElevatorSpeed(0);
+    Robot.elevator.setElevatorPower(0);
     System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 
@@ -82,7 +82,7 @@ public class Command_SetElevator extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.elevator.setElevatorSpeed(0);
+    Robot.elevator.setElevatorPower(0);
     System.out.println("\nInterrupted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 }

@@ -51,8 +51,8 @@ public class Command_SetWrist extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.wrist.setWristSpeed(speed);
-    Robot.wrist.moveWrist(speed);
+    Robot.wrist.setWristPower(speed);
+    //Robot.wrist.moveWrist(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -64,7 +64,7 @@ public class Command_SetWrist extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.wrist.setWristSpeed(0);
+    Robot.wrist.setWristPower(0);
     System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 
@@ -72,7 +72,7 @@ public class Command_SetWrist extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.wrist.setWristSpeed(0);
+    Robot.wrist.setWristPower(0);
     System.out.println("\nInterrupted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 }

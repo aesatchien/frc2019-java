@@ -72,8 +72,8 @@ public class OI {
     buttonRB = new JoystickButton(stick, 6);
     buttonBack = new JoystickButton(stick,7);
     buttonStart = new JoystickButton(stick, 8);
-    povButtonUp = new  POVButton(stick, 180);
-    povButtonDown = new  POVButton(stick, 0);
+    povButtonUp = new  POVButton(stick, 0);
+    povButtonDown = new  POVButton(stick, 180);
     povButtonRight = new  POVButton(stick, 90);
     povButtonLeft = new  POVButton(stick, 270);
     axisButtonLT = new AxisButton(stick, 2);
@@ -101,7 +101,10 @@ public class OI {
     buttonLB.whenPressed(new Command_Shifters(0, buttonLB)); //low gear
     buttonRB.whenPressed(new Command_Shifters(1, buttonRB)); //high gear
     //Set Wrist - fixed the directions, motor has to be inverted
-    povButtonUp.whenPressed(new Command_SetWrist(1, povButtonUp));
-    povButtonDown.whenPressed(new Command_SetWrist(-1, povButtonDown));
+    //povButtonUp.whenPressed(new Command_SetWrist(0.35, povButtonUp));
+    //povButtonDown.whenPressed(new Command_SetWrist(-.1, povButtonDown));
+    //Set Elevator PID - fixed the directions, motor has to be inverted
+    povButtonUp.whenPressed(new Command_SetElevatorHeightPID(5.0));
+    povButtonDown.whenPressed(new Command_SetElevatorHeightPID(-5.0));
   }
 }

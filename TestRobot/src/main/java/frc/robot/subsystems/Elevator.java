@@ -26,6 +26,9 @@ public class Elevator extends Subsystem {
   //AMT encoder - use the brown on B 1 and white on A on 0 ??
   private Encoder elevatorEncoder = new Encoder(0,1,false, Encoder.EncodingType.k4X);
   double distancePerPulse = 2048;
+  double maxPower = 0.6;
+  double elevatorPower = 0;
+  double setpoint = 0;
   
 public Elevator(){
   super();
@@ -44,21 +47,35 @@ public Elevator(){
     setDefaultCommand(new Command_ElevatorDefault());
   }
 
-  public void setElevatorSpeed(double speed) {
-      PWMSpark.set(speed);
+  public void setElevatorPower(double pow) {
+    elevatorPower= pow;
+    PWMSpark.set(elevatorPower);
   }
-  //public void defaultElevator() {
-  // PWMSpark.set(0.5);
-  //}
+
+  public double getElevatorHeight(){
+    return elevatorEncoder.getDistance();
+  }
+  public double getElevatorSetpoint(){
+    return setpoint;
+  }
+  public void setElevatorSetpoint(double height){
+    setpoint = height;
+  }
   public boolean isElevatorLow(){
     return !elevatorLimitLow.get();
   }
-
+  public void reset(){
+    elevatorEncoder.reset();
+    elevatorPower = 0;
+    setpoint = 0;
+  }
   public void log() {
     counter ++;
     if (Math.floorMod(counter, 10) == 0) {
       SmartDashboard.putBoolean("Elevator Bottom", !elevatorLimitLow.get());
       SmartDashboard.putNumber("Elevator Distance", ((int)(100*elevatorEncoder.getDistance()))/100.0);
+      SmartDashboard.putNumber("Elevator Power", elevatorPower);
+      SmartDashboard.putNumber("Elevator Setpoint",(int)(100*setpoint)/100.0);
     }
    // if (Math.floorMod(counter, 100) == 0) {
    //   if (isElevatorLow()) {elevatorEncoder.reset();}

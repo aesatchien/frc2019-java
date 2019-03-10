@@ -36,7 +36,6 @@ public class Wrist extends Subsystem {
     wristTalon.setInverted(true);
   }
 
-
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -47,8 +46,8 @@ public class Wrist extends Subsystem {
     wristEncoder.reset();
   }
 
-  public void setWristSpeed(double speed) {
-    wristTalon.set(ControlMode.PercentOutput, speed);
+  public void setWristPower(double pow) {
+    wristTalon.set(ControlMode.PercentOutput, pow);
   }
   public void moveWrist(double direction) {
     double maxPower = 0.4;

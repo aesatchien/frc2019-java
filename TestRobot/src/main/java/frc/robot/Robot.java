@@ -132,8 +132,7 @@ public class Robot extends TimedRobot {
     }
     pneumatics.compressorOff();
     // This should set the compressor to off
-    drivetrain.driveGyro.reset();
-    wrist.reset();
+    reset();
   }
 
   /**
@@ -153,6 +152,11 @@ public class Robot extends TimedRobot {
     //log();
   }
 
+  public void reset(){
+    drivetrain.driveGyro.reset();
+    wrist.reset();
+    elevator.reset();
+  }
   public void log(){
     drivetrain.log();
     elevator.log();

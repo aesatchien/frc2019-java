@@ -22,50 +22,54 @@ public class Wrist extends Subsystem {
   private Encoder wristEncoder = new Encoder(4,5,false, Encoder.EncodingType.k4X);
   double distancePerPulse = 2048;
   private TalonSRX wristTalon = new TalonSRX(5);
-  private final double WRIST_POWER_FORWARD_LIMIT = 0.1;
-  private final double WRIST_POWER_REVERSE_LIMIT = -0.1;
+  private final double WRIST_POWER_FORWARD_LIMIT = 0.3;
+  private final double WRIST_POWER_REVERSE_LIMIT = -0.3;
   //Don't let the talon apply power past certian encoder limits
-  private final int WRIST_SOFT_FORWARD_LIMIT = 180000;
-  private final int WRIST_SOFT_REVERSE_LIMIT = 100;
+  private final int WRIST_SOFT_FORWARD_LIMIT = 250000;
+  private final int WRIST_SOFT_REVERSE_LIMIT = -10000;
   
   private int counter = 0;
 
   public Wrist(){
     super();
-    wristEncoder.setDistancePerPulse(distancePerPulse);
+    /*wristEncoder.setDistancePerPulse(distancePerPulse);
     wristEncoder.setDistancePerPulse((1.0/31.0)/distancePerPulse);
     wristEncoder.setReverseDirection(true);
     wristEncoder.setSamplesToAverage(7);
-    wristEncoder.reset();
+    wristEncoder.reset();*/
 
-    wristTalon.setInverted(true);
-    wristTalon.configForwardSoftLimitThreshold(WRIST_SOFT_FORWARD_LIMIT,10);
-    wristTalon.configReverseSoftLimitThreshold(WRIST_SOFT_REVERSE_LIMIT, 10);
-    wristTalon.configForwardSoftLimitEnable(false, 10);
-    wristTalon.configReverseSoftLimitEnable(false, 10);
-
-    //Initial config for the Talon 
-		wristTalon.setSensorPhase(true);  //Need to double check this
+    // Initial config for the Talon 
+    wristTalon.setSensorPhase(false);  //This is what stripped the belt!
+    wristTalon.setInverted(false);
+    // I actually never actually let the code ask for limits higher than this, and they may do
+    // more harm than good if there is a slip of some sort.
+    wristTalon.configForwardSoftLimitEnable(true, 10);
+    wristTalon.configReverseSoftLimitEnable(true, 10);
 		wristTalon.setSelectedSensorPosition(0, 0, 0);  //Position is zero on on the encoder when we boot up
-    //set the speed limits
+    //set the output limits
     wristTalon.configPeakOutputForward(WRIST_POWER_FORWARD_LIMIT, 10);
     wristTalon.configPeakOutputReverse(WRIST_POWER_REVERSE_LIMIT, 10);  //Gravity is our reverse
-    //See if the Voltage compensation will give us more reliable performance
+    //Set the soft limits on position
+    wristTalon.configForwardSoftLimitThreshold(WRIST_SOFT_FORWARD_LIMIT,10);
+    wristTalon.configReverseSoftLimitThreshold(WRIST_SOFT_REVERSE_LIMIT, 10);
+        //See if the Voltage compensation will give us more reliable performance
     wristTalon.configVoltageCompSaturation(11, 10);
     wristTalon.enableVoltageCompensation(true);
+    //Try not to let it jerk - it seems to do that sometimes.  Give it 1s to get to full.
+    //wristTalon.configClosedloopRamp(1.0, 10);
+    //Start us at zero
     wristTalon.set(ControlMode.Position, 0);
     
     
 		//Set the gains - do this after testing it with the joystick
 		//FWD, P, I, D, I limits that work ok for position mode (in Talon SLOT 0)
-    // wristTalon.config_kP(0, .25, 10);  // 0.25 works if you don't limit the max setpoint difference
-    wristTalon.config_kP(0, 0.001, 10);  // 0.8 works if you DO limit the max setpoint difference to ~ 500
+    wristTalon.config_kP(0, 0.01, 10);  // 0.01 works ... 0.15 alone oscillates
     wristTalon.config_kI(0, 0, 10);
-    wristTalon.config_kD(0, 0, 10);
-    wristTalon.config_kF(0, 0.1, 10);
+    wristTalon.config_kD(0, 0.0, 10);
+    wristTalon.config_kF(0, 0, 10);
     
-    //FWD, P, I, D, I limits that work ok for velocity mode (in Talon SLOT 1)
-    wristTalon.config_kP(1, 1.0, 10);
+    // UNTESTED FWD, P, I, D, I limits that work ok for velocity mode (in Talon SLOT 1)
+    wristTalon.config_kP(1, 0.001, 10);
     wristTalon.config_kI(1, 0.000, 10);
     wristTalon.config_kD(1, 0.0, 10);
   }
@@ -125,9 +129,10 @@ public class Wrist extends Subsystem {
       wristTalon.set(ControlMode.PercentOutput, 0);
     }
   }
+
     @Deprecated
     //This is for controlling via the TalonSRX in velocity mode
-    //NEEDS A LOT OF WORK
+    //NEEDS A LOT OF WORK IF WE WANT TO TRY IT.  POSITION IS SAFER.
   public void setVelocity(double vel) {
     //Velocity we put in Slot 1, PID 0
     wristTalon.selectProfileSlot(1, 0);
@@ -147,7 +152,6 @@ public class Wrist extends Subsystem {
     }
     wristTalon.configOpenloopRamp(0.01, 10); 
     wristTalon.set(ControlMode.Velocity, vel ,1);
-    
   }
 
 
@@ -156,12 +160,13 @@ public class Wrist extends Subsystem {
     counter ++;
     if (Math.floorMod(counter, 10) == 0) {
       //SmartDashboard.putBoolean("Wrist Top", !elevatorLimitLow.get());
-      SmartDashboard.putNumber("Wrist Distance", ((int)(100*getWristPosition()))/100.0);
+      //SmartDashboard.putNumber("Wrist Distance", ((int)(100*getWristPosition()))/100.0);
       double wristPos = wristTalon.getSelectedSensorPosition(0);
       SmartDashboard.putNumber("Wrist Talon", ((int)(100*wristPos))/100.0);
       SmartDashboard.putNumber("Wrist Velocity", wristTalon.getSelectedSensorVelocity(0));
       SmartDashboard.putNumber("Wrist Current", wristTalon.getOutputCurrent());
       SmartDashboard.putNumber("Wrist Setpoint", getWristSetpoint());
+      SmartDashboard.putNumber("Wrist Output", wristTalon.getMotorOutputPercent() );
     }
   }
   

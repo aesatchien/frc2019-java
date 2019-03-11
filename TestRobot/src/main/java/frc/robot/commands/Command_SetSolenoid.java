@@ -12,50 +12,66 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.buttons.*;
 
 public class Command_SetSolenoid extends Command {
-  int state;
+  String state;
   JoystickButton button;
-  
+  boolean bButtonless;
+
   public Command_SetSolenoid() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.pneumatics);
   }
-  public Command_SetSolenoid(int state, JoystickButton button) {
+
+  public Command_SetSolenoid(String state) {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    this();
+    this.state = state;
+    bButtonless = true;
+    this.button = button;
+  }
+  public Command_SetSolenoid(String state, JoystickButton button) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this();
     this.state = state;
     this.button = button;
+    bButtonless = false;
   }
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (state ==0) {Robot.pneumatics.compressorToggle();}
-    if (state ==2) {Robot.pneumatics.hatchToggle();}
-    //if (state ==1) {Robot.pneumatics.raiseRobot();}
-    if (state ==-1) {Robot.pneumatics.solenoidReverse();}
-    //if (state ==3) {Robot.pneumatics.highGear();}
-    //if (state ==4) {Robot.pneumatics.lowGear();}
-    if (state ==5) {Robot.pneumatics.solenoidOff();}    
+    if (state.equals("climb")) {Robot.pneumatics.toggleClimbingEnabled();}
+    if (state == "compressor") {Robot.pneumatics.compressorToggle();}
+    if (state == "hatch") {Robot.pneumatics.hatchToggle();}
+    if (state == "retractboth") {Robot.pneumatics.retractFrontAndBack();}
+    if (state == "float") {Robot.pneumatics.solenoidOff();}   
+    if (Robot.pneumatics.isClimbingEnabled()){
+      if (state == "retractfront") {Robot.pneumatics.retractFront();;}
+      if (state == "retractback") {Robot.pneumatics.retractBack();;}      
+      //if (state ==1) {Robot.pneumatics.raiseRobot();}
+       
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return ! button.get();
+    //if (bButtonless){return true;}
+    //else{return ! button.get();}
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
     //System.out.println("\nAnalog 0 is " + String.format("%.2f",Robot.drivetrain.getAnalog0()));
-        System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ String.format("%d",this.state) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
+        System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ state +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
         //Robot.pneumatics.solenoidOff();
       }
 

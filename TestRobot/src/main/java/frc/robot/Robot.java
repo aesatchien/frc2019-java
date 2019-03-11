@@ -130,8 +130,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    pneumatics.compressorOff();
+    
     // This should set the compressor to off
+    pneumatics.compressorOff();
     reset();
   }
 
@@ -156,6 +157,7 @@ public class Robot extends TimedRobot {
     drivetrain.driveGyro.reset();
     wrist.reset();
     elevator.reset();
+    pneumatics.reset();
   }
   public void log(){
     drivetrain.log();

@@ -20,6 +20,9 @@ public class Command_SetWrist extends Command {
   int axis;
   Button button;
   boolean bAxisButton; 
+  double MINIMUM_POSITION = -1000;
+  double MAXIMUM_POSITION = 250000;
+
   public Command_SetWrist() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.wrist);
@@ -54,9 +57,9 @@ public class Command_SetWrist extends Command {
     //Robot.wrist.setWristPower(speed);
     //Robot.wrist.moveWrist(speed);
     double currentSP = Robot.wrist.getWristSetpoint();
-    double delta = 100;
-    if (speed > 0){ Robot.wrist.setPosition(currentSP + delta); }
-    else if (speed <= 0.0){ Robot.wrist.setPosition(currentSP - delta); }
+    double delta = 4000;
+    if (speed > 0){ Robot.wrist.setPosition(Math.min(MAXIMUM_POSITION, currentSP + delta)); }
+    else if (speed <= 0.0){ Robot.wrist.setPosition(Math.max(MINIMUM_POSITION, currentSP - delta)); }
     //else {Robot.wrist.setVelocity(0);}
   }
 

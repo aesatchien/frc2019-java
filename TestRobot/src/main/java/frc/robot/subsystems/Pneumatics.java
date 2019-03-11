@@ -37,6 +37,7 @@ public class Pneumatics extends Subsystem {
   private boolean bBackHigh;
   private boolean bCompressorOn=false;
   private boolean bHatchOpen=false;
+  private boolean bClimbingEnabled = false;
   private int counter;
   private double tilt;
   private final double frontTiltLimit = 3.0;
@@ -47,6 +48,85 @@ public class Pneumatics extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  // see if climbing is enabled
+  public boolean isClimbingEnabled(){
+    return bClimbingEnabled;
+  }
+  public void setClimbingEnabled(){
+    bClimbingEnabled = true;
+  }
+  public void toggleClimbingEnabled(){
+    if(bClimbingEnabled){
+      bClimbingEnabled=false;
+    }
+    else{
+      bClimbingEnabled=true;  
+    }
+  }
+
+  // open and close the hatch
+  public void hatchToggle(){
+    if(bHatchOpen){
+      hatch.set(false);
+      bHatchOpen=false;
+    }
+    else{
+      hatch.set(true);
+      bHatchOpen=true;  
+    }
+  }
+
+  // Turn off all front and back so we can "float"
+  public void solenoidOff(){
+    shifter.set(false);
+    frontSolenoid.set(DoubleSolenoid.Value.kOff);
+    backSolenoid.set(DoubleSolenoid.Value.kOff);
+    //shifter.set(DoubleSolenoid.Value.kOff);
+  }
+  // Raise robot while maintaining balance with the gyro
+  public void raiseRobot(){
+    tilt = Robot.drivetrain.driveGyro.getAngle();
+    if (tilt < - frontTiltLimit ) {
+      frontSolenoid.set(DoubleSolenoid.Value.kOff);
+      backSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+    else if (tilt > backTiltLimit) {
+      frontSolenoid.set(DoubleSolenoid.Value.kForward);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+    }
+    else {
+      frontSolenoid.set(DoubleSolenoid.Value.kForward);
+      backSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+  }
+
+  // Retract both front and back
+  public void retractFrontAndBack(){  
+    frontSolenoid.set(DoubleSolenoid.Value.kReverse);
+    backSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+  public void retractFront(){  
+    frontSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+  public void retractBack(){  
+    backSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+  
+  public void set_tiltOffset(){
+    //tiltOffset= (Robot.drivetrain.getVector())[1];
+  }
+  public void highGear(){
+    shifter.set(true);
+  }
+  public void lowGear(){
+    shifter.set(false);
+  }
+  public void pneumaticDrive(double speed){
+    pneumaticTalon.set(ControlMode.PercentOutput, speed);
+    pneumaticVictor.set(ControlMode.PercentOutput, -1.0*speed);
+  }
+  //set the compressor off and on - mainly for practice
   public void compressorOff(){
     compressor.setClosedLoopControl(false);
     bCompressorOn=false;
@@ -65,57 +145,11 @@ public class Pneumatics extends Subsystem {
       bCompressorOn=true;  
     }
   }
-  public void hatchToggle(){
-    if(bHatchOpen){
-      hatch.set(false);
-      bHatchOpen=false;
-    }
-    else{
-      hatch.set(true);
-      bHatchOpen=true;  
-    }
-  }
 
-  public void solenoidOff(){
-    shifter.set(false);
-    frontSolenoid.set(DoubleSolenoid.Value.kOff);
-    backSolenoid.set(DoubleSolenoid.Value.kOff);
-    //shifter.set(DoubleSolenoid.Value.kOff);
-  }
-  public void raiseRobot(){
-    tilt = Robot.drivetrain.driveGyro.getAngle();
-    if (tilt < - frontTiltLimit ) {
-      frontSolenoid.set(DoubleSolenoid.Value.kOff);
-      backSolenoid.set(DoubleSolenoid.Value.kForward);
-    }
-    else if (tilt > backTiltLimit) {
-      frontSolenoid.set(DoubleSolenoid.Value.kForward);
-      backSolenoid.set(DoubleSolenoid.Value.kOff);
-    }
-    else {
-      frontSolenoid.set(DoubleSolenoid.Value.kForward);
-      backSolenoid.set(DoubleSolenoid.Value.kForward);
-    }
-  }
-  public void solenoidReverse(){  
-    frontSolenoid.set(DoubleSolenoid.Value.kReverse);
-    backSolenoid.set(DoubleSolenoid.Value.kReverse);
-  }
-  
-  public void set_tiltOffset(){
-    //tiltOffset= (Robot.drivetrain.getVector())[1];
-  }
-  public void highGear(){
+  public void reset(){
+    bClimbingEnabled= false;
     shifter.set(false);
   }
-  public void lowGear(){
-    shifter.set(true);
-  }
-  public void pneumaticDrive(double speed){
-    pneumaticTalon.set(ControlMode.PercentOutput, speed);
-    pneumaticVictor.set(ControlMode.PercentOutput, -1.0*speed);
-  }
-
   public void log(){
     counter ++;
     
@@ -129,6 +163,7 @@ public class Pneumatics extends Subsystem {
       SmartDashboard.putBoolean("Compressor", bCompressorOn);
       SmartDashboard.putNumber("Tilt", 0.01 * Math.round(100 * tilt));
       SmartDashboard.putBoolean("Compressor", bCompressorOn);
+      SmartDashboard.putBoolean("Climbable", bClimbingEnabled);
 
     }
   }

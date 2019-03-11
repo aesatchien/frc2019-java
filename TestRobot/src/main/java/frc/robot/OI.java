@@ -10,6 +10,7 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
 import frc.robot.spartanutils.AxisButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -79,33 +80,38 @@ public class OI {
     axisButtonLT = new AxisButton(stick, 2);
     axisButtonRT = new AxisButton(stick, 3);
 
+    // Pneumatics:
     // Toggle hatch
-    buttonA.whenPressed(new Command_SetSolenoid(2,buttonA));
-    // Toggle Solenoid
-    buttonY.whenPressed(new Command_SetSolenoid(0,buttonY));
-    // 1 if extend (fwd)
+    buttonA.whenPressed(new Command_SetSolenoid("hatch",buttonA));
+    // Toggle Compressor
+    buttonY.whenPressed(new Command_SetSolenoid("compressor",buttonY));
+    // extend both (fwd)
     //buttonB.whenPressed(new Command_RaiseRobot(buttonB));
-    buttonB.whenPressed(new Command_SetIntake(-0.2, buttonB));
-    // -1 is retract (rev)
-    buttonX.whenPressed(new Command_SetSolenoid(-1,buttonX));
+    // Retract both
+    buttonX.whenPressed(new Command_SetSolenoid("retractboth",buttonX));
     // turn off the solenoids (maintain pressure)
-    buttonBack.whenPressed(new Command_SetSolenoid(5,buttonBack));
-    
+    buttonBack.whenPressed(new Command_SetSolenoid("float",buttonBack));
+    // run the back wheels to move forward  
     buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
+    
     //Intake in and out - negative (left at the moment) is out, right is in
     povButtonLeft.whenPressed(new Command_SetIntake(-0.2, povButtonLeft));
     povButtonRight.whenPressed(new Command_SetIntake(0.3, povButtonRight));
-    //Elevator with variable speed
-    axisButtonLT.whenPressed(new Command_SetElevator(-0.3,axisButtonLT,2));
-    axisButtonRT.whenPressed(new Command_SetElevator(0.3,axisButtonRT,3));
-    //Elevator fixed speed - testing buttons
+    //Set Elevator PID - fixed the directions, motor has to be inverted
+    axisButtonLT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonLT));
+    axisButtonRT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonRT));
+
+    //Shifters - testing buttons
     buttonLB.whenPressed(new Command_Shifters(0, buttonLB)); //low gear
     buttonRB.whenPressed(new Command_Shifters(1, buttonRB)); //high gear
     //Set Wrist - fixed the directions, motor has to be inverted
-    //povButtonUp.whenPressed(new Command_SetWrist(1.0, povButtonUp));
-    //povButtonDown.whenPressed(new Command_SetWrist(-1.0, povButtonDown));
-    //Set Elevator PID - fixed the directions, motor has to be inverted
-    povButtonUp.whenPressed(new Command_SetElevatorHeightPID(1.0,povButtonUp));
-    povButtonDown.whenPressed(new Command_SetElevatorHeightPID(-1.0,povButtonDown));
+    // Higher number on encoder lowers the wrist, so raising it is the negative direction 
+    povButtonUp.whenPressed(new Command_SetWrist(-1.0, povButtonUp));
+    povButtonDown.whenPressed(new Command_SetWrist(1.0, povButtonDown));
+ 
+    //Put stuff on the dashboard
+    SmartDashboard.putData("Enable Climb", new Command_SetSolenoid("climb"));
+    SmartDashboard.putData("Retract Front", new Command_SetSolenoid("retractfront"));
+    SmartDashboard.putData("Retract Back", new Command_SetSolenoid("retractback"));
   }
 }

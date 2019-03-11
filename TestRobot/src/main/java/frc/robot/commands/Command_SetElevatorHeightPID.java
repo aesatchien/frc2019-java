@@ -16,22 +16,24 @@ public class Command_SetElevatorHeightPID extends Command {
   private double deltaHeight;
   Button button;
   double setpoint;
-  double kp = 0.15;
-  double ki = 0.001;
-  double kf = 0.25;
-  double kd = 0.25;
-  double kierror = 0;
-  double kderror = 0;
+  //double kp = 0.3;
+  //double ki = 0.001;
+  //double kf = 0.25;
+  //double kd = 0.25;
+  //double kierror = 0;
+  //double kderror = 0;
   double previouserror = 0;
   double error=0;
-  double tolerance = 1.0;
-  final double MAXPOWER = 0.55;
-  final double MINPOWER = 0.1;
+  //double tolerance = 1.0;
+  //final double MAXPOWER = 0.55;
+  //final double MINPOWER = 0.1;
   double counter = 0;
+  final double MAXHEIGHT = 90;
+  double increment = 0.3;
 
   public Command_SetElevatorHeightPID() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
+    //requires(Robot.elevator);
   }
 
   public Command_SetElevatorHeightPID(double deltaHeight) {
@@ -52,7 +54,8 @@ public class Command_SetElevatorHeightPID extends Command {
   @Override
   protected void initialize() {
     System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.deltaHeight) +") and button value: "+ Robot.oi.stick.getPOV(0) +" at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
-    Robot.elevator.setElevatorSetpoint(Robot.elevator.getElevatorHeight() +  deltaHeight);
+    //Robot.elevator.setElevatorSetpoint(Robot.elevator.getElevatorHeight() +  deltaHeight);
+    Robot.elevator.setElevatorSetpoint(Robot.elevator.getElevatorSetpoint() +  deltaHeight);
     previouserror = 0;
     error=0;
     //Robot.elevator.setElevatorSetpoint(deltaHeight);
@@ -61,9 +64,9 @@ public class Command_SetElevatorHeightPID extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      double elevatorPower;
+/*    double elevatorPower;
       double increment = 0.1;
-      //increase the setpoint if button is held down ... kind of a cheat
+      //increase the setpoint if button is held down ... why doesn't this work?
       if (!button.get()){
         Robot.elevator.setElevatorSetpoint(Robot.elevator.getElevatorSetpoint() +  Math.signum(deltaHeight)*increment);
       }
@@ -84,13 +87,22 @@ public class Command_SetElevatorHeightPID extends Command {
       previouserror = error;
       SmartDashboard.putNumber("Elevator Error", error);
       //Timer.delay(0.05);
-
+*/
+    
+double allowedDelta=10;     
+double setpoint = Robot.elevator.getElevatorSetpoint() +  Math.signum(deltaHeight)*increment;
+    double curatedSetpoint = Math.max(0,Math.min(MAXHEIGHT,setpoint));
+    //Don't stray too much - helps in tuning
+    if (curatedSetpoint > Robot.elevator.getElevatorHeight()+ allowedDelta){curatedSetpoint=Robot.elevator.getElevatorHeight()+ allowedDelta;}
+    if (curatedSetpoint < Robot.elevator.getElevatorHeight() - allowedDelta){curatedSetpoint=Robot.elevator.getElevatorHeight() - allowedDelta;}
+    Robot.elevator.setElevatorSetpoint(curatedSetpoint);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Math.abs(error) < tolerance);
+    //return (Math.abs(error) < tolerance);
+    return !(button.get());
   }
 
   // Called once after isFinished returns true

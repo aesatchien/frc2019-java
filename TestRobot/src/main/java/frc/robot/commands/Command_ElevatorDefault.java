@@ -10,15 +10,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Command_ElevatorDefault extends Command {
 
   double setpoint;
-  double kp = 0.1;
-  double kf = 0.15;
+  double kp = 0.25;
+  double kf = 0.1;
   double error=0;
   double tolerance = 1.0;
-  double maxPower = 0.4;
+  double previouserror = 0;
+  final double MAXPOWER = 0.75;
+  final double MINPOWER = 0.-30;
+
 
   public Command_ElevatorDefault() {
     // Use requires() here to declare subsystem dependencies
@@ -44,11 +48,17 @@ public class Command_ElevatorDefault extends Command {
     double elevatorPower;
       error = Robot.elevator.getElevatorSetpoint()- Robot.elevator.getElevatorHeight();
       elevatorPower= kf + kp*error;
-      if (Robot.elevator.getElevatorSetpoint() < 0){
+      if (Robot.elevator.getElevatorSetpoint() <= 0){
         elevatorPower=0;
         Robot.elevator.setElevatorSetpoint(0);
+        //Robot.elevator.setElevatorPower(0);
       }
-      Robot.elevator.setElevatorPower(Math.min(maxPower,elevatorPower));
+      else{
+        // make sure we never go lower than minimum power and higher than maximum power
+        Robot.elevator.setElevatorPower(Math.max(MINPOWER, Math.min(MAXPOWER,elevatorPower)));
+      }
+      previouserror = error;
+      SmartDashboard.putNumber("Elevator Error", error);
 
   }
 

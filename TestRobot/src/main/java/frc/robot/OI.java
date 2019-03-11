@@ -105,7 +105,7 @@ public class OI {
     //povButtonUp.whenPressed(new Command_SetWrist(1.0, povButtonUp));
     //povButtonDown.whenPressed(new Command_SetWrist(-1.0, povButtonDown));
     //Set Elevator PID - fixed the directions, motor has to be inverted
-    povButtonUp.whenPressed(new Command_SetElevatorHeightPID(5.0,povButtonUp));
-    povButtonDown.whenPressed(new Command_SetElevatorHeightPID(-5.0,povButtonDown));
+    povButtonUp.whenPressed(new Command_SetElevatorHeightPID(1.0,povButtonUp));
+    povButtonDown.whenPressed(new Command_SetElevatorHeightPID(-1.0,povButtonDown));
   }
 }

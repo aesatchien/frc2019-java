@@ -25,7 +25,7 @@ public class Wrist extends Subsystem {
   private final double WRIST_POWER_FORWARD_LIMIT = 0.3;
   private final double WRIST_POWER_REVERSE_LIMIT = -0.3;
   //Don't let the talon apply power past certian encoder limits
-  private final int WRIST_SOFT_FORWARD_LIMIT = 250000;
+  private final int WRIST_SOFT_FORWARD_LIMIT = 330000;
   private final int WRIST_SOFT_REVERSE_LIMIT = -10000;
   
   private int counter = 0;

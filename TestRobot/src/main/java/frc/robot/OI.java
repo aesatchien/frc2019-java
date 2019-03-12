@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class OI {
 
+  private boolean bCompetitionMode = true;  
   public Joystick stick;
   public JoystickButton buttonA;
   public JoystickButton buttonB;
@@ -32,7 +33,21 @@ public class OI {
   public POVButton povButtonRight;
   public AxisButton axisButtonLT;
   public AxisButton axisButtonRT;
-  
+  public Joystick coStick;
+  public JoystickButton coButtonA;
+  public JoystickButton coButtonB;
+  public JoystickButton coButtonX;
+  public JoystickButton coButtonY;
+  public JoystickButton coButtonLB;
+  public JoystickButton coButtonRB;
+  public JoystickButton coButtonBack;
+  public JoystickButton coButtonStart;
+  public POVButton coPovButtonUp;
+  public POVButton coPovButtonDown;
+  public POVButton coPovButtonLeft;
+  public POVButton coPovButtonRight;
+  public AxisButton coAxisButtonLT;
+  public AxisButton coAxisButtonRT; 
 
 
   //// CREATING BUTTONS
@@ -79,7 +94,25 @@ public class OI {
     povButtonLeft = new  POVButton(stick, 270);
     axisButtonLT = new AxisButton(stick, 2);
     axisButtonRT = new AxisButton(stick, 3);
+    if(bCompetitionMode){
+      coStick = new Joystick(1);      
+      coButtonA = new JoystickButton(coStick, 1);
+      coButtonB = new JoystickButton(coStick, 2);
+      coButtonX = new JoystickButton(coStick, 3);
+      coButtonY = new JoystickButton(coStick, 4);
+      coButtonLB = new JoystickButton(coStick, 5);
+      coButtonRB = new JoystickButton(coStick, 6);
+      coButtonBack = new JoystickButton(coStick,7);
+      coButtonStart = new JoystickButton(coStick, 8);
+      coPovButtonUp = new  POVButton(coStick, 0);
+      coPovButtonDown = new  POVButton(coStick, 180);
+      coPovButtonRight = new  POVButton(coStick, 90);
+      coPovButtonLeft = new  POVButton(coStick, 270);
+      coAxisButtonLT = new AxisButton(coStick, 2);
+      coAxisButtonRT = new AxisButton(coStick, 3);
+    }
 
+    if(!bCompetitionMode){
     // Pneumatics:
     // Toggle hatch
     buttonA.whenPressed(new Command_SetSolenoid("hatch",buttonA));
@@ -95,8 +128,8 @@ public class OI {
     buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
     
     //Intake in and out - negative (left at the moment) is out, right is in
-    povButtonLeft.whenPressed(new Command_SetIntake(-0.2, povButtonLeft));
-    povButtonRight.whenPressed(new Command_SetIntake(0.3, povButtonRight));
+    povButtonLeft.whenPressed(new Command_SetIntake(-0.99, povButtonLeft));
+    povButtonRight.whenPressed(new Command_SetIntake(0.5, povButtonRight));
     //Set Elevator PID - fixed the directions, motor has to be inverted
     axisButtonLT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonLT));
     axisButtonRT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonRT));
@@ -108,10 +141,30 @@ public class OI {
     // Higher number on encoder lowers the wrist, so raising it is the negative direction 
     povButtonUp.whenPressed(new Command_SetWrist(-1.0, povButtonUp));
     povButtonDown.whenPressed(new Command_SetWrist(1.0, povButtonDown));
- 
+
+    }
+
+    if(bCompetitionMode){
+
+    povButtonUp.whenPressed(new Command_dPadDrive("up",povButtonUp));
+    povButtonDown.whenPressed(new Command_dPadDrive("down", povButtonDown));
+    povButtonLeft.whenPressed(new Command_dPadDrive("left",povButtonLeft));
+    povButtonRight.whenPressed(new Command_dPadDrive("right", povButtonRight));
+
+// start of coButtons
+
+    //Intake in and out - negative (left at the moment) is out, right is in
+    
+  } 
     //Put stuff on the dashboard
+    SmartDashboard.putString("J1 Buttons", "Up/Down:Wrist LT/RT:Elevator LB/RB:shifter\n L/R:Intake Y:Comp A:Hatch X:Retract B:? \n Start:PnWheel Back:Float");
     SmartDashboard.putData("Enable Climb", new Command_SetSolenoid("climb"));
     SmartDashboard.putData("Retract Front", new Command_SetSolenoid("retractfront"));
     SmartDashboard.putData("Retract Back", new Command_SetSolenoid("retractback"));
+
+  
+
+
+
   }
 }

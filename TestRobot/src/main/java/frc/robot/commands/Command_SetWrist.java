@@ -21,7 +21,7 @@ public class Command_SetWrist extends Command {
   Button button;
   boolean bAxisButton; 
   double MINIMUM_POSITION = -1000;
-  double MAXIMUM_POSITION = 250000;
+  double MAXIMUM_POSITION = 330000;
 
   public Command_SetWrist() {
     // Use requires() here to declare subsystem dependencies

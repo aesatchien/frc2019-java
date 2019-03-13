@@ -130,6 +130,10 @@ public class Wrist extends Subsystem {
     }
   }
 
+  public double getWristMaxPosition() {
+    return WRIST_SOFT_FORWARD_LIMIT;
+  }
+
     @Deprecated
     //This is for controlling via the TalonSRX in velocity mode
     //NEEDS A LOT OF WORK IF WE WANT TO TRY IT.  POSITION IS SAFER.

@@ -145,15 +145,60 @@ public class OI {
     }
 
     if(bCompetitionMode){
-
+    //Driver
+    buttonStart.whenPressed(new Command_SetSolenoid("compressor",buttonStart));  
+    buttonRB.whenPressed(new Command_SetSolenoid("togglegear", buttonRB)); //toggle gear
     povButtonUp.whenPressed(new Command_dPadDrive("up",povButtonUp));
     povButtonDown.whenPressed(new Command_dPadDrive("down", povButtonDown));
     povButtonLeft.whenPressed(new Command_dPadDrive("left",povButtonLeft));
     povButtonRight.whenPressed(new Command_dPadDrive("right", povButtonRight));
+    //Set Wrist - fixed the directions, motor has to be inverted
+    // Higher number on encoder lowers the wrist, so raising it is the negative direction 
+    buttonY.whenPressed(new Command_SetWrist(-1.0, buttonY));
+    buttonA.whenPressed(new Command_SetWrist(1.0, buttonA));
+
+    buttonLB.whenPressed(new Instant_SetWrist(0.0)); //wrist up
+    buttonX.whenPressed(new Instant_SetWrist(0.20*Robot.wrist.getWristMaxPosition())); //wrist cargo elevator clearance 20?
+    buttonY.whenPressed(new Instant_SetWrist(0.4*0.20*Robot.wrist.getWristMaxPosition())); //wrist hatch elevator clearance 40?
+   // L trigger [hold]: Wrist 45 [for cargo ship]
+  //  R trigger [hold]: Wrist out 90 [for intake] 
+    
+   
+    
+
 
 // start of coButtons
+ //Cory these are Bryan's buttons can you check to make sure it work
+  //co buttons needs
+  //R trigger: Elevator up fast
+  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonRT));
+  //L trigger: Elevator down fast
+  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonLT));
+  //R bumper: Elevator up slow coButtonRB
+  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonRT));
+  //L bumper: Elevator down slow coButtonLB
+  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonLT));
 
-    //Intake in and out - negative (left at the moment) is out, right is in
+  //X : Cargo in [intake]
+  coButtonX.whenPressed(new Command_SetIntake(0.5, coButtonX));
+  //B : Cargo out [output]
+  coButtonB.whenPressed(new Command_SetIntake(-0.99, coButtonB));  
+  //A : Hatch toggle we will want an indicator on the shuffleboard for this
+  coButtonA.whenPressed(new Command_SetSolenoid("hatch",coButtonA));
+  //Y run the back wheels to move forward  
+  coButtonY.whenPressed(new Command_PneumaticDrive(0.65,coButtonY));
+  //  Operator: End game mode
+  //Mode: Climber control mode:
+  //D pad: Low ride motors - front back
+  //B: Front / back (all) piston Down
+  //Y: Front Up
+  //A: Rear up
+  //X: emergency raise pistons
+  //Back: Compressor toggle
+  coButtonStart.whenPressed(new Command_SetSolenoid("compressor",coButtonStart));
+
+
+
     
   } 
     //Put stuff on the dashboard

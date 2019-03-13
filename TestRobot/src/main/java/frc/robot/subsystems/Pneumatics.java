@@ -35,6 +35,7 @@ public class Pneumatics extends Subsystem {
   private VictorSPX pneumaticVictor = new VictorSPX(7);
   private boolean bFrontHigh;
   private boolean bBackHigh;
+  private boolean bHighGear = false;
   private boolean bCompressorOn=false;
   private boolean bHatchOpen=false;
   private boolean bClimbingEnabled = false;
@@ -122,6 +123,16 @@ public class Pneumatics extends Subsystem {
   public void lowGear(){
     shifter.set(false);
   }
+  public void gearToggle(){
+    if(bHighGear){
+      lowGear();
+      bHighGear=false;
+    }
+    else{
+      highGear();
+      bHighGear=true;  
+    }
+  }
   public void pneumaticDrive(double speed){
     pneumaticTalon.set(ControlMode.PercentOutput, speed);
     pneumaticVictor.set(ControlMode.PercentOutput, -1.0*speed);
@@ -162,7 +173,7 @@ public class Pneumatics extends Subsystem {
       SmartDashboard.putBoolean("Back High", bBackHigh);
       SmartDashboard.putBoolean("Compressor", bCompressorOn);
       SmartDashboard.putNumber("Tilt", 0.01 * Math.round(100 * tilt));
-      SmartDashboard.putBoolean("Compressor", bCompressorOn);
+      SmartDashboard.putBoolean("High Gear", bHighGear);
       SmartDashboard.putBoolean("Climbable", bClimbingEnabled);
 
     }

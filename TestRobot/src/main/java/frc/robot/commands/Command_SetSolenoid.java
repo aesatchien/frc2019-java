@@ -45,7 +45,8 @@ public class Command_SetSolenoid extends Command {
     if (state == "compressor") {Robot.pneumatics.compressorToggle();}
     if (state == "hatch") {Robot.pneumatics.hatchToggle();}
     if (state == "retractboth") {Robot.pneumatics.retractFrontAndBack();}
-    if (state == "float") {Robot.pneumatics.solenoidOff();}   
+    if (state == "float") {Robot.pneumatics.solenoidOff();}
+    if (state == "togglegear") {Robot.pneumatics.gearToggle();}      
     if (Robot.pneumatics.isClimbingEnabled()){
       if (state == "retractfront") {Robot.pneumatics.retractFront();;}
       if (state == "retractback") {Robot.pneumatics.retractBack();;}      

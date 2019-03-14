@@ -6,17 +6,15 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
-
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-//import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import frc.robot.commands.*;
+import frc.robot.commands.drivetrain.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import java.lang.Math;
 
@@ -37,7 +35,7 @@ public class Drivetrain extends Subsystem {
   private final CANEncoder SparkNeoEncoder1 = sparkNeoL1.getEncoder();
   private final CANEncoder SparkNeoEncoder3 = sparkNeoR3.getEncoder();
   public final Gyro driveGyro = new ADXRS450_Gyro();
-  private final double twistSensitivity = 0.4;
+  private final double twistSensitivity = 0.5;
   private int counter;
 	// Used to make robot accelerate smoother - grinding it
 	private static double currentThrust = 0, currentTwist = 0;
@@ -99,11 +97,11 @@ public class Drivetrain extends Subsystem {
   public void log() {
     counter ++;
     if (Math.floorMod(counter, 10) == 0) {
-      SmartDashboard.putNumber("Position Enc1", 0.1*Math.round(10*SparkNeoEncoder1.getPosition()));
-      SmartDashboard.putNumber("Velocity Enc1", 0.1*Math.round(10*SparkNeoEncoder1.getVelocity()));
+      SmartDashboard.putNumber("Position Enc1", (int)(SparkNeoEncoder1.getPosition()));
+      SmartDashboard.putNumber("Velocity Enc1", (int)SparkNeoEncoder1.getVelocity());
       //SmartDashboard.putNumber("Position Enc2", 0.1*Math.round(10*SparkNeoEncoder2.getPosition()));
-      SmartDashboard.putNumber("Position Enc3", 0.1*Math.round(10*SparkNeoEncoder3.getPosition()));
-      SmartDashboard.putNumber("Velocity Enc3", 0.1*Math.round(10*SparkNeoEncoder3.getVelocity()));
+      SmartDashboard.putNumber("Position Enc3", (int)SparkNeoEncoder3.getPosition());
+      SmartDashboard.putNumber("Velocity Enc3", (int)SparkNeoEncoder3.getVelocity());
       //SmartDashboard.putNumber("Position Enc4", Math.round(SparkNeoEncoder4.getPosition()));
       SmartDashboard.putNumber("DriveGyro", 0.01*Math.round(100*driveGyro.getAngle()));
       //SmartDashboard.putNumber("BadTiltValue", getBadTilt());

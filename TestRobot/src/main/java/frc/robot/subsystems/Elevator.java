@@ -74,7 +74,7 @@ public Elevator(){
     if (Math.floorMod(counter, 10) == 0) {
       SmartDashboard.putBoolean("Elevator Bottom", !elevatorLimitLow.get());
       SmartDashboard.putNumber("Elevator Distance", ((int)(100*elevatorEncoder.getDistance()))/100.0);
-      SmartDashboard.putNumber("Elevator Power", elevatorPower);
+      SmartDashboard.putNumber("Elevator Power", (int)(100*elevatorPower)/100.0);
       SmartDashboard.putNumber("Elevator Setpoint",(int)(100*setpoint)/100.0);
     }
    // if (Math.floorMod(counter, 100) == 0) {

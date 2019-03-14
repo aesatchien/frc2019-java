@@ -76,7 +76,7 @@
                 {
                   "_type": "Boolean Box",
                   "_source0": "network_table:///SmartDashboard/High Gear",
-                  "_title": "High Gear",
+                  "_title": "SmartDashboard/High Gear",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 }
@@ -119,50 +119,6 @@
                   "_title": "Elevator Bottom",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
-                }
-              ]
-            }
-          },
-          "6,0": {
-            "size": [
-              2,
-              6
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_title": "Wrist",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Wrist Talon",
-                  "_title": "Wrist Talon"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Wrist Setpoint",
-                  "_title": "Wrist Setpoint"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Wrist Velocity",
-                  "_title": "Wrist Velocity"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Wrist Current",
-                  "_title": "Wrist Current"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Wrist Output",
-                  "_title": "Wrist Output"
-                },
-                {
-                  "_type": "Subsystem Layout",
-                  "_title": "Subsystem Layout",
-                  "Layout/Label position": "BOTTOM",
-                  "_children": []
                 }
               ]
             }
@@ -227,6 +183,44 @@
                   "Colors/Color when false": "#8B0000FF"
                 }
               }
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              5
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Wrist",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Wrist Talon",
+                  "_title": "Wrist Talon"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Wrist Setpoint",
+                  "_title": "Wrist Setpoint"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Wrist Velocity",
+                  "_title": "Wrist Velocity"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Wrist Current",
+                  "_title": "Wrist Current"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Wrist Output",
+                  "_title": "Wrist Output"
+                }
+              ]
             }
           }
         }
@@ -433,9 +427,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 39.0,
-    "y": 29.0,
-    "width": 1430.0,
-    "height": 619.0
+    "x": 55.0,
+    "y": 16.0,
+    "width": 1449.0,
+    "height": 563.0
   }
 }

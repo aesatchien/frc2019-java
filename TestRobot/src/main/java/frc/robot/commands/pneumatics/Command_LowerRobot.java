@@ -5,22 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.pneumatics;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.buttons.*;
 
-public class Command_RaiseRobot extends Command {
-  JoystickButton button;
+public class Command_LowerRobot extends Command {
+  Button button;
   private double initTime;
   private boolean bisInitialized;
 
-  public Command_RaiseRobot() {
+  public Command_LowerRobot() {
     requires(Robot.pneumatics);
   }
 
-  public Command_RaiseRobot(JoystickButton button) {
+  public Command_LowerRobot(Button button) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this();
@@ -34,29 +34,12 @@ public class Command_RaiseRobot extends Command {
   protected void initialize() {
     double now = Timer.getFPGATimestamp();
     System.out.println("\nInitialized "+  this.getClass().getSimpleName() +"() at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
-    if (Robot.pneumatics.isClimbingEnabled()){
-      //Need to find a way to know if we have been reset for testing...
-      // Only reset the gyro if it has been minutes since the last reset
-      if (bisInitialized){
-        if (now - initTime > 120) {
-          Robot.drivetrain.driveGyro.reset();
-          initTime = now;
-        }
-        else {
-          bisInitialized = true;
-          Robot.drivetrain.driveGyro.reset();
-          initTime = now;
-        }
-      }
-    }
   }
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.pneumatics.isClimbingEnabled()){
-      Robot.pneumatics.raiseRobot();
-      Timer.delay(0.05);
-    }
+    Robot.pneumatics.retractFrontAndBack();
+    Timer.delay(0.025);
   }
 
   // Make this return true when this Command no longer needs to run execute()

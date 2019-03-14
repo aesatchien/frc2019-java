@@ -5,58 +5,56 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-
+package frc.robot.commands.drivetrain;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.Button;
+import frc.robot.Robot;
+import edu.wpi.first.wpilibj.buttons.*;
 
-public class Command_WristMagicMotion extends Command {
-  double startpos;
-  double endpos;
-  Button button;
-
-  public Command_WristMagicMotion() {
-    requires(Robot.wrist);
+public class Command_SetSparkMax extends Command {
+  double speed;
+  JoystickButton button;
+  public Command_SetSparkMax() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.drivetrain);
   }
-  public Command_WristMagicMotion(double startpos, double endpos, Button button) {
+  public Command_SetSparkMax(double vel, JoystickButton button) {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
     this();
-    this.startpos = startpos;
-    this.endpos = endpos;
+    this.speed = vel;
     this.button = button;
   }
-
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.startpos) +","+  String.format("%.1f",this.endpos)  +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
-    Robot.wrist.setWristMagic(startpos);
+   
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.drivetrain.SparkWithStick(speed,0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    
     return ! button.get();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.startpos) +","+  String.format("%.1f",this.endpos)  +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
-    Robot.wrist.setWristMagic(endpos);
+    //System.out.println("\nAnalog 0 is " + String.format("%.2f",Robot.drivetrain.getAnalog0()));
+    System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.speed) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    System.out.println("\nInterrupted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.startpos) +","+  String.format("%.1f",this.endpos)  +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
- 
   }
 }

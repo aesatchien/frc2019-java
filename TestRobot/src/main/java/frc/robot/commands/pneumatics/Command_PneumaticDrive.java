@@ -5,40 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.pneumatics;
+
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.buttons.*;
 
-public class Command_Shifters extends Command {
-  int state;
+public class Command_PneumaticDrive extends Command {
+  double speed = 0;
   JoystickButton button;
-  
-  public Command_Shifters() {
+  public Command_PneumaticDrive() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.pneumatics);
+    requires(Robot.drivetrain);
   }
-  public Command_Shifters(int state, JoystickButton button) {
+  
+  public Command_PneumaticDrive(double myspeed, JoystickButton mybutton) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this();
-    this.state = state;
-    this.button = button;
+    this.speed = myspeed;
+    this.button = mybutton;
   }
+
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (state ==0) {Robot.pneumatics.lowGear();}
-    if (state ==1) {Robot.pneumatics.highGear();}
-        
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    Robot.pneumatics.pneumaticDrive(speed);
+    Robot.drivetrain.smoothDrive(0.1, 0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -50,14 +50,13 @@ public class Command_Shifters extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    //System.out.println("\nAnalog 0 is " + String.format("%.2f",Robot.drivetrain.getAnalog0()));
-        System.out.println("\nEnded "+  this.getClass().getSimpleName() +"("+ String.format("%d",this.state) +") at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
-        //Robot.pneumatics.solenoidOff();
-      }
+    Robot.pneumatics.pneumaticDrive(0);
+  }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.pneumatics.pneumaticDrive(0);
   }
 }

@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.drivetrain;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.*;
@@ -37,10 +37,10 @@ public class Command_dPadDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(state == "up"){Robot.drivetrain.SparkWithStick(-0.15, 0);}
-    if(state == "down"){Robot.drivetrain.SparkWithStick(0.15, 0);}
-    if(state == "right"){Robot.drivetrain.SparkWithStick(0, -0.5);}
-    if(state == "left"){Robot.drivetrain.SparkWithStick(0, 0.5);}
+    if(state.equals("up")) {Robot.drivetrain.SparkWithStick(-0.15, 0);}
+    if(state.equals("down")) {Robot.drivetrain.SparkWithStick(0.15, 0);}
+    if(state.equals("right")) {Robot.drivetrain.SparkWithStick(0, -0.4);}
+    if(state.equals("left")) {Robot.drivetrain.SparkWithStick(0, 0.4);}
   }
 
   // Make this return true when this Command no longer needs to run execute()

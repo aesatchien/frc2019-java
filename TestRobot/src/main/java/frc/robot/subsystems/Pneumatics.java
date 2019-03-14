@@ -102,6 +102,23 @@ public class Pneumatics extends Subsystem {
     }
   }
 
+    // Raise robot while maintaining balance with the gyro
+    public void lowerRobot(){
+      tilt = Robot.drivetrain.driveGyro.getAngle();
+      if (tilt < - frontTiltLimit ) {
+        frontSolenoid.set(DoubleSolenoid.Value.kReverse);
+        backSolenoid.set(DoubleSolenoid.Value.kOff);
+      }
+      else if (tilt > backTiltLimit) {
+        frontSolenoid.set(DoubleSolenoid.Value.kOff);
+        backSolenoid.set(DoubleSolenoid.Value.kReverse);
+      }
+      else {
+        frontSolenoid.set(DoubleSolenoid.Value.kReverse);
+        backSolenoid.set(DoubleSolenoid.Value.kReverse);
+      }
+    }
+
   // Retract both front and back
   public void retractFrontAndBack(){  
     frontSolenoid.set(DoubleSolenoid.Value.kReverse);

@@ -22,8 +22,8 @@ public class Wrist extends Subsystem {
   private Encoder wristEncoder = new Encoder(4,5,false, Encoder.EncodingType.k4X);
   double distancePerPulse = 2048;
   private TalonSRX wristTalon = new TalonSRX(5);
-  private final double WRIST_POWER_FORWARD_LIMIT = 0.45;
-  private final double WRIST_POWER_REVERSE_LIMIT = -0.45;
+  private final double WRIST_POWER_FORWARD_LIMIT = 0.65;
+  private final double WRIST_POWER_REVERSE_LIMIT = -0.65;
   //Don't let the talon apply power past certian encoder limits
   private final int WRIST_SOFT_FORWARD_LIMIT = 330000;
   private final int WRIST_SOFT_REVERSE_LIMIT = -10000;
@@ -52,7 +52,7 @@ public class Wrist extends Subsystem {
     //Set the soft limits on position
     wristTalon.configForwardSoftLimitThreshold(WRIST_SOFT_FORWARD_LIMIT,10);
     wristTalon.configReverseSoftLimitThreshold(WRIST_SOFT_REVERSE_LIMIT, 10);
-        //See if the Voltage compensation will give us more reliable performance
+    //See if the Voltage compensation will give us more reliable performance
     wristTalon.configVoltageCompSaturation(11, 10);
     wristTalon.enableVoltageCompensation(true);
     //Try not to let it jerk - it seems to do that sometimes.  Give it 1s to get to full.
@@ -81,6 +81,11 @@ public class Wrist extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  //failsafe if the robot fails and the wrist falls on the ground
+  public void set_Encoder(int pos){
+    wristTalon.setSelectedSensorPosition(pos, 0, 10);
   }
 
   public void reset(){
@@ -179,10 +184,10 @@ public class Wrist extends Subsystem {
       //SmartDashboard.putNumber("Wrist Distance", ((int)(100*getWristPosition()))/100.0);
       double wristPos = wristTalon.getSelectedSensorPosition(0);
       SmartDashboard.putNumber("Wrist Talon", ((int)(100*wristPos))/100.0);
-      SmartDashboard.putNumber("Wrist Velocity", wristTalon.getSelectedSensorVelocity(0));
-      SmartDashboard.putNumber("Wrist Current", wristTalon.getOutputCurrent());
-      SmartDashboard.putNumber("Wrist Setpoint", getWristSetpoint());
-      SmartDashboard.putNumber("Wrist Output", wristTalon.getMotorOutputPercent() );
+      SmartDashboard.putNumber("Wrist Velocity", (int)(100*wristTalon.getSelectedSensorVelocity(0)/100.0));
+      SmartDashboard.putNumber("Wrist Current", (int)(100*wristTalon.getOutputCurrent()/100.0));
+      SmartDashboard.putNumber("Wrist Setpoint", (int)(100*getWristSetpoint()/100.0));
+      SmartDashboard.putNumber("Wrist Output", (int)(100*wristTalon.getMotorOutputPercent()/100.0));
     }
   }
   

@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.pneumatics;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
@@ -42,14 +42,14 @@ public class Command_SetSolenoid extends Command {
   @Override
   protected void initialize() {
     if (state.equals("climb")) {Robot.pneumatics.toggleClimbingEnabled();}
-    if (state == "compressor") {Robot.pneumatics.compressorToggle();}
-    if (state == "hatch") {Robot.pneumatics.hatchToggle();}
-    if (state == "retractboth") {Robot.pneumatics.retractFrontAndBack();}
-    if (state == "float") {Robot.pneumatics.solenoidOff();}
-    if (state == "togglegear") {Robot.pneumatics.gearToggle();}      
+    if (state.equals("compressor")) {Robot.pneumatics.compressorToggle();}
+    if (state.equals("hatch")) {Robot.pneumatics.hatchToggle();}
+    if (state.equals("retractboth")) {Robot.pneumatics.retractFrontAndBack();}
+    if (state.equals("float")) {Robot.pneumatics.solenoidOff();}
+    if (state.equals("togglegear")) {Robot.pneumatics.gearToggle();}      
     if (Robot.pneumatics.isClimbingEnabled()){
-      if (state == "retractfront") {Robot.pneumatics.retractFront();;}
-      if (state == "retractback") {Robot.pneumatics.retractBack();;}      
+      if (state.equals("retractfront")) {Robot.pneumatics.retractFront();;}
+      if (state.equals("retractback")) {Robot.pneumatics.retractBack();;}      
       //if (state ==1) {Robot.pneumatics.raiseRobot();}
        
     }

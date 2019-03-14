@@ -6,7 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import frc.robot.commands.pneumatics.*;
+import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.wrist.*;
 import frc.robot.commands.*;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
 import frc.robot.spartanutils.AxisButton;
@@ -154,7 +158,6 @@ public class OI {
     buttonX.whenPressed(new Instant_SetWrist(0.25*Robot.wrist.getWristMaxPosition()));  //wrist cargo elevator clearance 15?
     buttonY.whenPressed(new Instant_SetWrist(0.25*Robot.wrist.getWristMaxPosition()));   //wrist hatch elevator clearance 25?
     buttonLB.whenPressed(new Instant_SetWrist(0.0)); //wrist up  
-
     buttonStart.whenPressed(new Command_SetSolenoid("compressor",buttonStart));  
     buttonRB.whenPressed(new Command_SetSolenoid("togglegear", buttonRB)); //toggle gear
     povButtonUp.whenPressed(new Command_dPadDrive("up",povButtonUp));
@@ -167,9 +170,9 @@ public class OI {
 // start of coButtons
  //Cory these are Bryan's buttons can you check to make sure it work
    //R trigger: Elevator up fast
-  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(1.0, 0.5, axisButtonRT));
+  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(1.0, 0.5, coAxisButtonRT));
   //L trigger: Elevator down fast
-  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(-1.0, 0.5, axisButtonLT));
+  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(-1.0, 0.5, coAxisButtonLT));
   //R bumper: Elevator up slow coButtonRB
   coButtonRB.whenPressed(new Command_SetElevatorHeightPID(1.0,coButtonRB));
   //L bumper: Elevator down slow coButtonLB
@@ -182,26 +185,18 @@ public class OI {
   coButtonA.whenPressed(new Command_SetSolenoid("hatch",coButtonA));
   //Y run the back wheels to move forward  
   coButtonY.whenPressed(new Command_PneumaticDrive(0.65,coButtonY));
+
+  coPovButtonUp.whenPressed(new Command_LowerRobot(coPovButtonUp));
+  coPovButtonDown.whenPressed(new Command_RaiseRobot(coPovButtonDown));
+  coButtonStart.whenPressed(new Command_SetSolenoid("compressor",coButtonStart));
   //  Operator: End game mode
   //Mode: Climber control mode:
-  //D pad: Low ride motors - front back
-  //B: Front / back (all) piston Down
-  //Y: Front Up
-  //A: Rear up
-  //X: emergency raise pistons
-  //Back: Compressor toggle
-  coButtonStart.whenPressed(new Command_SetSolenoid("compressor",coButtonStart));
-
+ 
   } 
     //Put stuff on the dashboard
     //SmartDashboard.putString("J1 Buttons", "Up/Down:Wrist LT/RT:Elevator LB/RB:shifter\n L/R:Intake Y:Comp A:Hatch X:Retract B:? \n Start:PnWheel Back:Float");
     SmartDashboard.putData("Enable Climb", new Command_SetSolenoid("climb"));
     SmartDashboard.putData("Retract Front", new Command_SetSolenoid("retractfront"));
     SmartDashboard.putData("Retract Back", new Command_SetSolenoid("retractback"));
-
-  
-
-
-
   }
 }

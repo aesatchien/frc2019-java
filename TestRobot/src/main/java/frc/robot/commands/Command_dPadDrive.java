@@ -39,8 +39,8 @@ public class Command_dPadDrive extends Command {
   protected void execute() {
     if(state == "up"){Robot.drivetrain.SparkWithStick(-0.15, 0);}
     if(state == "down"){Robot.drivetrain.SparkWithStick(0.15, 0);}
-    if(state == "right"){Robot.drivetrain.SparkWithStick(0, 0.4);}
-    if(state == "left"){Robot.drivetrain.SparkWithStick(0, -0.4);}
+    if(state == "right"){Robot.drivetrain.SparkWithStick(0, -0.5);}
+    if(state == "left"){Robot.drivetrain.SparkWithStick(0, 0.5);}
   }
 
   // Make this return true when this Command no longer needs to run execute()

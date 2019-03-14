@@ -47,7 +47,16 @@ public class Command_SetElevatorHeightPID extends Command {
    this();
    this.deltaHeight = deltaHeight;
    this.button = button;
+   this.increment = 0.3;
   }
+  public Command_SetElevatorHeightPID(double deltaHeight, double increment, Button button) {
+    // Use requires() here to declare subsystem dependencies
+   this();
+   this.deltaHeight = deltaHeight;
+   this.button = button;
+   this.increment = increment;
+  }
+
 
 
   // Called just before this Command runs the first time

@@ -2,7 +2,7 @@
   "tabPane": [
     {
       "title": "SmartDashboard",
-      "autoPopulate": true,
+      "autoPopulate": false,
       "autoPopulatePrefix": "SmartDashboard/",
       "widgetPane": {
         "gridSize": 64.0,
@@ -10,7 +10,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "4,0": {
+          "12,0": {
             "size": [
               2,
               5
@@ -43,10 +43,10 @@
               ]
             }
           },
-          "8,0": {
+          "10,0": {
             "size": [
               2,
-              6
+              5
             ],
             "content": {
               "_type": "Subsystem Layout",
@@ -72,11 +72,18 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Velocity Enc3",
                   "_title": "Velocity Enc3"
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/High Gear",
+                  "_title": "High Gear",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
                 }
               ]
             }
           },
-          "6,0": {
+          "8,0": {
             "size": [
               2,
               5
@@ -116,7 +123,7 @@
               ]
             }
           },
-          "10,0": {
+          "6,0": {
             "size": [
               2,
               6
@@ -160,7 +167,26 @@
               ]
             }
           },
-          "12,0": {
+          "0,0": {
+            "size": [
+              6,
+              5
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": 60.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "14,0": {
             "size": [
               3,
               3
@@ -172,85 +198,35 @@
               "Layout/Number of rows": 3,
               "Layout/Label position": "BOTTOM",
               "_children": {
-                "0,0": {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/X",
-                  "_title": "X"
+                "1,2": {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Compressor",
+                  "_title": "Compressor",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
                 },
                 "1,0": {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Y",
-                  "_title": "Y"
-                },
-                "0,1": {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/DriveGyro",
-                  "_title": "DriveGyro"
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Back High",
+                  "_title": "Back High",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
                 },
                 "0,2": {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Z",
-                  "_title": "Z"
-                },
-                "1,1": {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Heading",
-                  "_title": "Heading"
-                }
-              }
-            }
-          },
-          "0,2": {
-            "size": [
-              3,
-              3
-            ],
-            "content": {
-              "_type": "List Layout",
-              "_title": "List Layout",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
                   "_type": "Boolean Box",
                   "_source0": "network_table:///SmartDashboard/Climbable",
                   "_title": "Climbable",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 },
-                {
+                "0,0": {
                   "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Compressor",
-                  "_title": "Compressor",
+                  "_source0": "network_table:///SmartDashboard/Front High",
+                  "_title": "Front High",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 }
-              ]
-            }
-          },
-          "0,0": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Front High",
-              "_title": "Front High",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "2,0": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Back High",
-              "_title": "Back High",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              }
             }
           }
         }
@@ -458,8 +434,8 @@
   ],
   "windowGeometry": {
     "x": 39.0,
-    "y": 16.0,
-    "width": 1256.0,
-    "height": 638.0
+    "y": 29.0,
+    "width": 1430.0,
+    "height": 619.0
   }
 }

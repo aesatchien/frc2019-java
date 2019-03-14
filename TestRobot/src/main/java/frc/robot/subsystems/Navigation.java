@@ -19,6 +19,7 @@ public class Navigation extends Subsystem {
   private static BNO055 imu;
   private double badTiltValue = 0;
   int counter = 0;
+  
   //private double pitch;
   //private double yaw;
   //private double tiltOffset = 0;
@@ -147,13 +148,13 @@ public class Navigation extends Subsystem {
     if (Math.floorMod(counter, 10) == 0) {
       //if (Math.abs(pos[1]-Robot.drivetrain.getBadTilt())<0.0001){badTilts++;}
      //else {tilt = pos[1] - tiltOffset;}
-     double[] pos = getVector();
-     double heading = getHeading();
+     //double[] pos = getVector();
+     //double heading = getHeading();
      //SmartDashboard.putNumber("Tilt Errors", badTilts);
-     SmartDashboard.putNumber("X", pos[0]);
-     SmartDashboard.putNumber("Y", pos[1]);
-     SmartDashboard.putNumber("Z", pos[2]);
-     SmartDashboard.putNumber("Heading", heading);
+     //SmartDashboard.putNumber("X", pos[0]);
+     //SmartDashboard.putNumber("Y", pos[1]);
+     //SmartDashboard.putNumber("Z", pos[2]);
+     //SmartDashboard.putNumber("Heading", heading);
     }
   }
 }

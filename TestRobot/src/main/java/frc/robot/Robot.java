@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -49,9 +51,10 @@ public class Robot extends TimedRobot {
       wrist = new Wrist();
       navigation = new Navigation();
       oi = new OI();  //oi must be last!!!  otherwise the commands start nulls
-    //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
-    //chooser.addOption("My Auto", new MyAutoCommand());
-    //SmartDashboard.putData("Auto mode", m_chooser);
+      new Thread(() -> {
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setResolution(320, 240);
+       }).start();
   }
 
   /**

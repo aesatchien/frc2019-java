@@ -22,8 +22,8 @@ public class Wrist extends Subsystem {
   private Encoder wristEncoder = new Encoder(4,5,false, Encoder.EncodingType.k4X);
   double distancePerPulse = 2048;
   private TalonSRX wristTalon = new TalonSRX(5);
-  private final double WRIST_POWER_FORWARD_LIMIT = 0.3;
-  private final double WRIST_POWER_REVERSE_LIMIT = -0.3;
+  private final double WRIST_POWER_FORWARD_LIMIT = 0.45;
+  private final double WRIST_POWER_REVERSE_LIMIT = -0.45;
   //Don't let the talon apply power past certian encoder limits
   private final int WRIST_SOFT_FORWARD_LIMIT = 330000;
   private final int WRIST_SOFT_REVERSE_LIMIT = -10000;
@@ -64,14 +64,17 @@ public class Wrist extends Subsystem {
 		//Set the gains - do this after testing it with the joystick
 		//FWD, P, I, D, I limits that work ok for position mode (in Talon SLOT 0)
     wristTalon.config_kP(0, 0.01, 10);  // 0.01 works ... 0.15 alone oscillates
-    wristTalon.config_kI(0, 0, 10);
+    wristTalon.config_kI(0, 0.0001, 10);
     wristTalon.config_kD(0, 0.0, 10);
     wristTalon.config_kF(0, 0, 10);
     
-    // UNTESTED FWD, P, I, D, I limits that work ok for velocity mode (in Talon SLOT 1)
-    wristTalon.config_kP(1, 0.001, 10);
+    // UNTESTED FWD, P, I, D, I limits that work ok for Magic/current/velocity mode (in Talon SLOT 1)
+    wristTalon.config_kP(1, 0.02, 10);
     wristTalon.config_kI(1, 0.000, 10);
-    wristTalon.config_kD(1, 0.0, 10);
+    wristTalon.config_kD(1, 2.0, 10);
+    wristTalon.config_kF(1, 0.0040, 10);
+
+    wristTalon.selectProfileSlot(0, 0);
   }
 
   @Override
@@ -82,6 +85,7 @@ public class Wrist extends Subsystem {
 
   public void reset(){
     wristEncoder.reset();
+    wristTalon.selectProfileSlot(0, 0);
     wristTalon.setSelectedSensorPosition(0, 0, 10);
     wristTalon.set(ControlMode.Position, 0);
   }
@@ -93,17 +97,28 @@ public class Wrist extends Subsystem {
     distance = wristTalon.getSelectedSensorPosition(0);
     return distance;
   }
-
-  public double getWristSetpoint() {
-   return wristTalon.getClosedLoopTarget(0);
-  }
-
+  
   //This is for controlling via the TalonSRX in position mode
   public void setPosition(double position) {
     //Position we put in Slot 0, PID 0
     wristTalon.selectProfileSlot(0, 0);
     wristTalon.set(ControlMode.Position, position);
   }
+  public void setWristMagic(double setpoint) {
+    wristTalon.configMotionCruiseVelocity(50000, 10);
+    wristTalon.configMotionAcceleration(50000, 10);
+    wristTalon.selectProfileSlot(1, 0);
+    wristTalon.configMotionSCurveStrength(0);
+    wristTalon.set(ControlMode.MotionMagic, setpoint);
+  }
+
+  public void setWristPower(double pow) {
+    wristTalon.set(ControlMode.PercentOutput, pow);
+  }
+  public double getWristSetpoint() {
+   return wristTalon.getClosedLoopTarget(0);
+  }
+
 
   public void holdPosition() {
     double pos = wristTalon.getSelectedSensorPosition(0);
@@ -112,9 +127,6 @@ public class Wrist extends Subsystem {
     
   }
 
-  public void setWristPower(double pow) {
-    wristTalon.set(ControlMode.PercentOutput, pow);
-  }
   public void moveWrist(double direction) {
     double maxPower = 0.4;
     //move up - pull hardest at the bottom (encoder = 1)

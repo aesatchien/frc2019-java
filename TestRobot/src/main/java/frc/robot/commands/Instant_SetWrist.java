@@ -29,7 +29,8 @@ public class Instant_SetWrist extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.wrist.setPosition(setpoint);
+    //Robot.wrist.setPosition(setpoint);
+    Robot.wrist.setWristMagic(setpoint);
   }
 
 }

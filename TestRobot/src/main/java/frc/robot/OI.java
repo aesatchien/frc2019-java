@@ -113,39 +113,46 @@ public class OI {
     }
 
     if(!bCompetitionMode){
-    // Pneumatics:
-    // Toggle hatch
-    buttonA.whenPressed(new Command_SetSolenoid("hatch",buttonA));
-    // Toggle Compressor
-    buttonY.whenPressed(new Command_SetSolenoid("compressor",buttonY));
-    // extend both (fwd)
-    //buttonB.whenPressed(new Command_RaiseRobot(buttonB));
-    // Retract both
-    buttonX.whenPressed(new Command_SetSolenoid("retractboth",buttonX));
-    // turn off the solenoids (maintain pressure)
-    buttonBack.whenPressed(new Command_SetSolenoid("float",buttonBack));
-    // run the back wheels to move forward  
-    buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
-    
-    //Intake in and out - negative (left at the moment) is out, right is in
-    povButtonLeft.whenPressed(new Command_SetIntake(-0.99, povButtonLeft));
-    povButtonRight.whenPressed(new Command_SetIntake(0.5, povButtonRight));
-    //Set Elevator PID - fixed the directions, motor has to be inverted
-    axisButtonLT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonLT));
-    axisButtonRT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonRT));
+      // Pneumatics:
+      // Toggle hatch
+      buttonA.whenPressed(new Command_SetSolenoid("hatch",buttonA));
+      // Toggle Compressor
+      buttonY.whenPressed(new Command_SetSolenoid("compressor",buttonY));
+      // extend both (fwd)
+      //buttonB.whenPressed(new Command_RaiseRobot(buttonB));
+      //buttonB.whenPressed(new Command_WristMagicMotion(0.99*Robot.wrist.getWristMaxPosition(), 0.05*Robot.wrist.getWristMaxPosition(), buttonB));
+      buttonB.whenPressed(new Instant_SetWrist(0.2*Robot.wrist.getWristMaxPosition()));
+      // Retract both
+      buttonX.whenPressed(new Command_SetSolenoid("retractboth",buttonX));
+      // turn off the solenoids (maintain pressure)
+      buttonBack.whenPressed(new Command_SetSolenoid("float",buttonBack));
+      // run the back wheels to move forward  
+      buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
+      
+      //Intake in and out - negative (left at the moment) is out, right is in
+      povButtonLeft.whenPressed(new Command_SetIntake(-0.99, povButtonLeft));
+      povButtonRight.whenPressed(new Command_SetIntake(0.5, povButtonRight));
+      //Set Elevator PID - fixed the directions, motor has to be inverted
+      axisButtonLT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonLT));
+      axisButtonRT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonRT));
 
-    //Shifters - testing buttons
-    buttonLB.whenPressed(new Command_Shifters(0, buttonLB)); //low gear
-    buttonRB.whenPressed(new Command_Shifters(1, buttonRB)); //high gear
-    //Set Wrist - fixed the directions, motor has to be inverted
-    // Higher number on encoder lowers the wrist, so raising it is the negative direction 
-    povButtonUp.whenPressed(new Command_SetWrist(-1.0, povButtonUp));
-    povButtonDown.whenPressed(new Command_SetWrist(1.0, povButtonDown));
-
+      //Shifters - testing buttons
+      buttonLB.whenPressed(new Command_Shifters(0, buttonLB)); //low gear
+      buttonRB.whenPressed(new Command_Shifters(1, buttonRB)); //high gear
+      //Set Wrist - fixed the directions, motor has to be inverted
+      // Higher number on encoder lowers the wrist, so raising it is the negative direction 
+      povButtonUp.whenPressed(new Command_SetWrist(-1.0, povButtonUp));
+      povButtonDown.whenPressed(new Command_SetWrist(1.0, povButtonDown));
     }
 
     if(bCompetitionMode){
     //Driver
+    axisButtonRT.whenPressed(new Command_WristMagicMotion(0.99*Robot.wrist.getWristMaxPosition(), 0.05*Robot.wrist.getWristMaxPosition(), axisButtonRT));
+    axisButtonLT.whenPressed(new Command_WristMagicMotion(0.50*Robot.wrist.getWristMaxPosition(), 0.05*Robot.wrist.getWristMaxPosition(), axisButtonLT));
+    buttonX.whenPressed(new Instant_SetWrist(0.2*Robot.wrist.getWristMaxPosition()));  //wrist cargo elevator clearance 15?
+    buttonY.whenPressed(new Instant_SetWrist(0.25*Robot.wrist.getWristMaxPosition()));   //wrist hatch elevator clearance 25?
+    buttonLB.whenPressed(new Instant_SetWrist(0.0)); //wrist up  
+
     buttonStart.whenPressed(new Command_SetSolenoid("compressor",buttonStart));  
     buttonRB.whenPressed(new Command_SetSolenoid("togglegear", buttonRB)); //toggle gear
     povButtonUp.whenPressed(new Command_dPadDrive("up",povButtonUp));
@@ -154,12 +161,9 @@ public class OI {
     povButtonRight.whenPressed(new Command_dPadDrive("right", povButtonRight));
     //Set Wrist - fixed the directions, motor has to be inverted
     // Higher number on encoder lowers the wrist, so raising it is the negative direction 
-    buttonY.whenPressed(new Command_SetWrist(-1.0, buttonY));
-    buttonA.whenPressed(new Command_SetWrist(1.0, buttonA));
+    
 
-    buttonLB.whenPressed(new Instant_SetWrist(0.0)); //wrist up
-    buttonX.whenPressed(new Instant_SetWrist(0.20*Robot.wrist.getWristMaxPosition())); //wrist cargo elevator clearance 20?
-    buttonY.whenPressed(new Instant_SetWrist(0.4*0.20*Robot.wrist.getWristMaxPosition())); //wrist hatch elevator clearance 40?
+
    // L trigger [hold]: Wrist 45 [for cargo ship]
   //  R trigger [hold]: Wrist out 90 [for intake] 
     
@@ -171,13 +175,13 @@ public class OI {
  //Cory these are Bryan's buttons can you check to make sure it work
   //co buttons needs
   //R trigger: Elevator up fast
-  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonRT));
+  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonRT));
   //L trigger: Elevator down fast
-  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonLT));
+  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonLT));
   //R bumper: Elevator up slow coButtonRB
-  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(-1.0,axisButtonRT));
+  coButtonRB.whenPressed(new Command_SetElevatorHeightPID(1.0,coButtonRB));
   //L bumper: Elevator down slow coButtonLB
-  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(1.0,axisButtonLT));
+  coButtonLB.whenPressed(new Command_SetElevatorHeightPID(-1.0,coButtonLB));
 
   //X : Cargo in [intake]
   coButtonX.whenPressed(new Command_SetIntake(0.5, coButtonX));

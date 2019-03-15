@@ -55,7 +55,8 @@ public class Robot extends TimedRobot {
       new Thread(() -> {
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(320, 240);
-        camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 15);
+        camera.setFPS(15);
+        //camera.setVideoMode(PixelFormat.kUnknown, 320, 240, 15);
        }).start();
   }
 

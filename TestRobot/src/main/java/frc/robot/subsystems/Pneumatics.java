@@ -41,8 +41,8 @@ public class Pneumatics extends Subsystem {
   private boolean bClimbingEnabled = false;
   private int counter;
   private double tilt;
-  private final double frontTiltLimit = 3.0;
-  private final double backTiltLimit = 3.0;
+  private final double frontTiltLimit = 2.0;
+  private final double backTiltLimit = 2.0;
 
     @Override
   public void initDefaultCommand() {

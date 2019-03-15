@@ -38,7 +38,7 @@ public class Command_PneumaticDrive extends Command {
   @Override
   protected void execute() {
     Robot.pneumatics.pneumaticDrive(speed);
-    Robot.drivetrain.smoothDrive(0.1, 0);
+    Robot.drivetrain.smoothDrive(-0.2, 0);
   }
 
   // Make this return true when this Command no longer needs to run execute()

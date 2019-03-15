@@ -42,11 +42,11 @@ public class Command_RaiseRobot extends Command {
           Robot.drivetrain.driveGyro.reset();
           initTime = now;
         }
-        else {
-          bisInitialized = true;
-          Robot.drivetrain.driveGyro.reset();
-          initTime = now;
-        }
+      }
+      else {
+        bisInitialized = true;
+        Robot.drivetrain.driveGyro.reset();
+        initTime = now;
       }
     }
   }
@@ -55,7 +55,7 @@ public class Command_RaiseRobot extends Command {
   protected void execute() {
     if (Robot.pneumatics.isClimbingEnabled()){
       Robot.pneumatics.raiseRobot();
-      Timer.delay(0.05);
+      Timer.delay(0.025);
     }
   }
 

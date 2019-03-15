@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,7 +36,7 @@ public class Drivetrain extends Subsystem {
   private final CANEncoder SparkNeoEncoder1 = sparkNeoL1.getEncoder();
   private final CANEncoder SparkNeoEncoder3 = sparkNeoR3.getEncoder();
   public final Gyro driveGyro = new ADXRS450_Gyro();
-  private final double twistSensitivity = 0.5;
+  private final double twistSensitivity = 0.75;
   private int counter;
 	// Used to make robot accelerate smoother - grinding it
 	private static double currentThrust = 0, currentTwist = 0;
@@ -43,6 +44,11 @@ public class Drivetrain extends Subsystem {
 
   public Drivetrain() {
     super();
+    sparkNeoL1.setIdleMode(IdleMode.kCoast);
+    sparkNeoL2.setIdleMode(IdleMode.kCoast);
+    sparkNeoR3.setIdleMode(IdleMode.kCoast);
+    sparkNeoR4.setIdleMode(IdleMode.kCoast);
+
    }
 
   @Override

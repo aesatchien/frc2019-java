@@ -105,5 +105,5 @@ public Elevator(){
    // if (Math.floorMod(counter, 100) == 0) {
    //   if (isElevatorLow()) {elevatorEncoder.reset();}
    // }
-  }
+  
 }

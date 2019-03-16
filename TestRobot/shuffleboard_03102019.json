@@ -10,7 +10,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "14,0": {
+          "16,0": {
             "size": [
               2,
               5
@@ -43,7 +43,7 @@
               ]
             }
           },
-          "12,0": {
+          "14,0": {
             "size": [
               2,
               5
@@ -76,14 +76,14 @@
                 {
                   "_type": "Boolean Box",
                   "_source0": "network_table:///SmartDashboard/High Gear",
-                  "_title": "SmartDashboard/High Gear",
+                  "_title": "High Gear",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 }
               ]
             }
           },
-          "10,0": {
+          "12,0": {
             "size": [
               2,
               5
@@ -93,11 +93,6 @@
               "_title": "Elevator",
               "Layout/Label position": "BOTTOM",
               "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Elevator Distance",
-                  "_title": "Elevator Distance"
-                },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Elevator Setpoint",
@@ -125,8 +120,8 @@
           },
           "0,0": {
             "size": [
-              8,
-              7
+              10,
+              8
             ],
             "content": {
               "_type": "Camera Stream",
@@ -137,12 +132,12 @@
               "Controls/Show controls": true,
               "Controls/Rotation": "NONE",
               "compression": 60.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "fps": 20,
+              "imageWidth": 320,
+              "imageHeight": 240
             }
           },
-          "16,0": {
+          "18,0": {
             "size": [
               3,
               3
@@ -185,7 +180,7 @@
               }
             }
           },
-          "8,0": {
+          "10,0": {
             "size": [
               2,
               5
@@ -221,6 +216,20 @@
                   "_title": "Wrist Output"
                 }
               ]
+            }
+          },
+          "10,5": {
+            "size": [
+              5,
+              3
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Elevator Distance",
+              "_title": "Elevator Distance",
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 90.0,
+              "Slider Settings/Block increment": 5.0
             }
           }
         }
@@ -427,9 +436,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 14.0,
-    "y": 1.0,
-    "width": 1560.0,
-    "height": 690.0
+    "x": 79.0,
+    "y": 18.0,
+    "width": 1698.0,
+    "height": 786.0
   }
 }

@@ -36,7 +36,7 @@ public class Drivetrain extends Subsystem {
   private final CANEncoder SparkNeoEncoder1 = sparkNeoL1.getEncoder();
   private final CANEncoder SparkNeoEncoder3 = sparkNeoR3.getEncoder();
   public final Gyro driveGyro = new ADXRS450_Gyro();
-  private final double twistSensitivity = 0.75;
+  private final double twistSensitivity = 0.99;
   private int counter;
 	// Used to make robot accelerate smoother - grinding it
 	private static double currentThrust = 0, currentTwist = 0;
@@ -103,11 +103,11 @@ public class Drivetrain extends Subsystem {
   public void log() {
     counter ++;
     if (Math.floorMod(counter, 10) == 0) {
-      SmartDashboard.putNumber("Position Enc1", (int)(SparkNeoEncoder1.getPosition()));
-      SmartDashboard.putNumber("Velocity Enc1", (int)SparkNeoEncoder1.getVelocity());
+      SmartDashboard.putNumber("Position Enc1", SparkNeoEncoder1.getPosition());
+      SmartDashboard.putNumber("Velocity Enc1", SparkNeoEncoder1.getVelocity());
       //SmartDashboard.putNumber("Position Enc2", 0.1*Math.round(10*SparkNeoEncoder2.getPosition()));
-      SmartDashboard.putNumber("Position Enc3", (int)SparkNeoEncoder3.getPosition());
-      SmartDashboard.putNumber("Velocity Enc3", (int)SparkNeoEncoder3.getVelocity());
+      SmartDashboard.putNumber("Position Enc3", SparkNeoEncoder3.getPosition());
+      SmartDashboard.putNumber("Velocity Enc3", SparkNeoEncoder3.getVelocity());
       //SmartDashboard.putNumber("Position Enc4", Math.round(SparkNeoEncoder4.getPosition()));
       SmartDashboard.putNumber("DriveGyro", 0.01*Math.round(100*driveGyro.getAngle()));
       //SmartDashboard.putNumber("BadTiltValue", getBadTilt());

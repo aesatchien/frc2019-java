@@ -31,7 +31,7 @@ public class Elevator extends Subsystem {
   double setpoint = 0;
   
 public Elevator(){
-  super();
+  super(); 
   elevatorEncoder.setDistancePerPulse(distancePerPulse);
   elevatorEncoder.setDistancePerPulse((1.0*3.14)/distancePerPulse);
   //driveEncoder.setReverseDirection(true);

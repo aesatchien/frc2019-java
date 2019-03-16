@@ -40,7 +40,7 @@ public class Drivetrain extends Subsystem {
   private int counter;
 	// Used to make robot accelerate smoother - grinding it
 	private static double currentThrust = 0, currentTwist = 0;
-	private static double accelerationLimit = 0.2;
+	private static double accelerationLimit = 0.1; // was 0.2, seems kinda high
 
   public Drivetrain() {
     super();
@@ -48,13 +48,13 @@ public class Drivetrain extends Subsystem {
     sparkNeoL2.setIdleMode(IdleMode.kCoast);
     sparkNeoR3.setIdleMode(IdleMode.kCoast);
     sparkNeoR4.setIdleMode(IdleMode.kCoast);
-
    }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new DriveByJoystick());
+    setDefaultCommand(new TankDrive());
   }
   public void SparkWithStick(double xSpeed, double zRotation) { 	
     differentialDrive.arcadeDrive(xSpeed, twistSensitivity*zRotation, false);
@@ -87,8 +87,13 @@ public class Drivetrain extends Subsystem {
 		}
     //Implement a speed limit if necessary
 		//currentThrust = Math.signum(currentThrust)*Math.min(Math.abs(thrustLimit),Math.abs(currentThrust));
-		differentialDrive.arcadeDrive(currentThrust, currentTwist, true);
-	}
+    differentialDrive.arcadeDrive(currentThrust, currentTwist, true);
+  }
+  
+  //max has to try tank drive ... in the middle of the competition
+  public void tankDrive(double left, double right){
+    differentialDrive.tankDrive(left,  right); 
+  }
 
   public void setVelocity(double velocity){
     sparkNeoL1.set(velocity);

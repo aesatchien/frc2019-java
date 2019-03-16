@@ -138,7 +138,8 @@ public class Robot extends TimedRobot {
     }
     
     // This should set the compressor to off
-    pneumatics.compressorOff();
+    pneumatics.compressorOn();
+    pneumatics.retractFrontAndBack();
     reset();
   }
 

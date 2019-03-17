@@ -54,7 +54,7 @@ public class Drivetrain extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new DriveByJoystick());
-    setDefaultCommand(new TankDrive());
+    //setDefaultCommand(new TankDrive());
   }
   public void SparkWithStick(double xSpeed, double zRotation) { 	
     differentialDrive.arcadeDrive(xSpeed, twistSensitivity*zRotation, false);

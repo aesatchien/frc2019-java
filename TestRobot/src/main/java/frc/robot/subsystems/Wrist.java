@@ -27,7 +27,7 @@ public class Wrist extends Subsystem {
   //Don't let the talon apply power past certian encoder limits
   private final int WRIST_SOFT_FORWARD_LIMIT = 330000;
   private final int WRIST_SOFT_REVERSE_LIMIT = -10000;
-  
+  //private final double WRIST_CURRENT_LIMIT = 12;  // Need to try this
   private int counter = 0;
 
   public Wrist(){
@@ -71,7 +71,7 @@ public class Wrist extends Subsystem {
     // UNTESTED FWD, P, I, D, I limits that work ok for Magic/current/velocity mode (in Talon SLOT 1)
     wristTalon.config_kP(1, 0.02, 10);
     wristTalon.config_kI(1, 0.000, 10);
-    wristTalon.config_kD(1, 2.0, 10);
+    wristTalon.config_kD(1, 3.0, 10);
     wristTalon.config_kF(1, 0.0040, 10);
 
     wristTalon.selectProfileSlot(0, 0);

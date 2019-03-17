@@ -104,7 +104,8 @@ double setpoint = Robot.elevator.getElevatorSetpoint() +  Math.signum(deltaHeigh
     //Don't stray too much - helps in tuning
     if (curatedSetpoint > Robot.elevator.getElevatorHeight()+ allowedDelta){curatedSetpoint=Robot.elevator.getElevatorHeight()+ allowedDelta;}
     if (curatedSetpoint < Robot.elevator.getElevatorHeight() - allowedDelta){curatedSetpoint=Robot.elevator.getElevatorHeight() - allowedDelta;}
-    Robot.elevator.setElevatorSetpoint((int)(100*curatedSetpoint)/100.0);
+    //Robot.elevator.setElevatorSetpoint((int)(100*curatedSetpoint)/100.0);
+    Robot.elevator.setElevatorSetpoint(curatedSetpoint);
   }
 
   // Make this return true when this Command no longer needs to run execute()

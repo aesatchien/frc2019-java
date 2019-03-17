@@ -184,11 +184,13 @@ public class OI {
   //A : Hatch toggle we will want an indicator on the shuffleboard for this
   coButtonA.whenPressed(new Command_SetSolenoid("hatch",coButtonA));
   //Y run the back wheels to move forward  
-  coButtonY.whenPressed(new Command_PneumaticDrive(0.65,coButtonY));
+  //vcoButtonY.whenPressed(new Command_PneumaticDrive(0.65,coButtonY));
+  coButtonY.whenPressed(new Command_SetIntake(0.15, coButtonY));
 
   coPovButtonUp.whenPressed(new Command_LowerRobot(coPovButtonUp));
   coPovButtonDown.whenPressed(new Command_RaiseRobot(coPovButtonDown));
   coButtonStart.whenPressed(new Command_SetSolenoid("compressor",coButtonStart));
+  coButtonBack.whenPressed(new Command_ElevatorReset(coButtonBack));
   //  Operator: End game mode
   //Mode: Climber control mode:
  
@@ -198,5 +200,8 @@ public class OI {
     SmartDashboard.putData("Enable Climb", new Command_SetSolenoid("climb"));
     SmartDashboard.putData("Retract Front", new Command_SetSolenoid("retractfront"));
     SmartDashboard.putData("Retract Back", new Command_SetSolenoid("retractback"));
+    SmartDashboard.putData("Floor Recovery", new Command_FloorRecovery(450000));
+    SmartDashboard.putData("Half Recovery", new Command_FloorRecovery(100000));
+    SmartDashboard.putData("Wrist Zero", new Command_ZeroEncoder());
   }
 }

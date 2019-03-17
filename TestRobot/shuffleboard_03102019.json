@@ -107,13 +107,6 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Elevator Power",
                   "_title": "Elevator Power"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Elevator Bottom",
-                  "_title": "Elevator Bottom",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
                 }
               ]
             }
@@ -218,18 +211,116 @@
               ]
             }
           },
-          "10,5": {
+          "20,5": {
             "size": [
-              5,
+              2,
               3
             ],
             "content": {
-              "_type": "Number Slider",
+              "_type": "Simple Dial",
               "_source0": "network_table:///SmartDashboard/Elevator Distance",
               "_title": "Elevator Distance",
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 90.0,
-              "Slider Settings/Block increment": 5.0
+              "Range/Min": 0.0,
+              "Range/Max": 90.0,
+              "Visuals/Show value": true
+            }
+          },
+          "18,3": {
+            "size": [
+              2,
+              5
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "List Layout",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/El Rocket3",
+                  "_title": "El Rocket3",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/El Cargo",
+                  "_title": "El Cargo",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/El Rocket2",
+                  "_title": "El Rocket2",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/El Rocket1",
+                  "_title": "El Rocket1",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Elevator Bottom",
+                  "_title": "Elevator Bottom",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                }
+              ]
+            }
+          },
+          "15,5": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Wrist Current",
+              "_title": "Wrist Current",
+              "Range/Min": 0.0,
+              "Range/Max": 20.0,
+              "Visuals/Show value": true
+            }
+          },
+          "12,5": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Wrist Talon",
+              "_title": "Wrist Talon",
+              "Range/Min": -100000.0,
+              "Range/Max": 400000.0,
+              "Visuals/Show value": true
+            }
+          },
+          "10,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Floor Recovery",
+              "_title": "Floor Recovery"
+            }
+          },
+          "10,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Wrist Zero",
+              "_title": "Wrist Zero"
             }
           }
         }
@@ -436,9 +527,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 79.0,
-    "y": 18.0,
-    "width": 1698.0,
+    "x": 15.0,
+    "y": 0.0,
+    "width": 1900.0,
     "height": 786.0
   }
 }

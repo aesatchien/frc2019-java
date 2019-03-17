@@ -53,9 +53,9 @@ public class Robot extends TimedRobot {
       navigation = new Navigation();
       oi = new OI();  //oi must be last!!!  otherwise the commands start nulls
       new Thread(() -> {
-        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-        camera.setResolution(320, 240);
-        camera.setFPS(15);
+       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+       camera.setResolution(320, 240);
+       // camera.setFPS(15);
         //camera.setVideoMode(PixelFormat.kUnknown, 320, 240, 15);
        }).start();
   }

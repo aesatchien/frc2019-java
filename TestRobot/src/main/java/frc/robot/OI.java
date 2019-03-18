@@ -158,7 +158,7 @@ public class OI {
     buttonX.whenPressed(new Instant_SetWrist(0.25*Robot.wrist.getWristMaxPosition()));  //wrist cargo elevator clearance 15?
     buttonY.whenPressed(new Instant_SetWrist(0.25*Robot.wrist.getWristMaxPosition()));   //wrist hatch elevator clearance 25?
     buttonLB.whenPressed(new Instant_SetWrist(0.0)); //wrist up  
-    buttonStart.whenPressed(new Command_SetSolenoid("compressor",buttonStart));  
+    //buttonStart.whenPressed(new Command_SetSolenoid("compressor",buttonStart));  
     buttonRB.whenPressed(new Command_SetSolenoid("togglegear", buttonRB)); //toggle gear
     povButtonUp.whenPressed(new Command_dPadDrive("up",povButtonUp));
     povButtonDown.whenPressed(new Command_dPadDrive("down", povButtonDown));

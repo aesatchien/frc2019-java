@@ -18,6 +18,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -54,7 +55,7 @@ public class Robot extends TimedRobot {
       oi = new OI();  //oi must be last!!!  otherwise the commands start nulls
       new Thread(() -> {
        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-       camera.setResolution(320, 240);
+       //camera.setResolution(320, 240);
        // camera.setFPS(15);
         //camera.setVideoMode(PixelFormat.kUnknown, 320, 240, 15);
        }).start();
@@ -172,5 +173,6 @@ public class Robot extends TimedRobot {
     pneumatics.log();
     navigation.log();
     wrist.log();
+    
   }
 }

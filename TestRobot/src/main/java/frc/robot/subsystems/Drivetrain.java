@@ -44,10 +44,16 @@ public class Drivetrain extends Subsystem {
 
   public Drivetrain() {
     super();
+    int currentLimit=80;
     sparkNeoL1.setIdleMode(IdleMode.kCoast);
     sparkNeoL2.setIdleMode(IdleMode.kCoast);
     sparkNeoR3.setIdleMode(IdleMode.kCoast);
     sparkNeoR4.setIdleMode(IdleMode.kCoast);
+    sparkNeoL1.setSmartCurrentLimit(currentLimit);
+    sparkNeoL2.setSmartCurrentLimit(currentLimit);
+    sparkNeoR3.setSmartCurrentLimit(currentLimit);
+    sparkNeoR4.setSmartCurrentLimit(currentLimit);
+    
    }
 
   @Override

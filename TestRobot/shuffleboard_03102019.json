@@ -232,7 +232,7 @@
             ],
             "content": {
               "_type": "List Layout",
-              "_title": "List Layout",
+              "_title": "Elevator Positions",
               "Layout/Label position": "BOTTOM",
               "_children": [
                 {
@@ -309,7 +309,18 @@
             "content": {
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Floor Recovery",
-              "_title": "Floor Recovery"
+              "_title": "/SmartDashboard/Floor Recovery"
+            }
+          },
+          "10,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Wrist Zero",
+              "_title": "/SmartDashboard/Wrist Zero"
             }
           },
           "10,6": {
@@ -319,8 +330,8 @@
             ],
             "content": {
               "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Wrist Zero",
-              "_title": "Wrist Zero"
+              "_source0": "network_table:///SmartDashboard/Half Recovery",
+              "_title": "/SmartDashboard/Half Recovery"
             }
           }
         }

@@ -30,8 +30,10 @@ public class Drivetrain extends Subsystem {
   private final CANSparkMax sparkNeoL2 = new CANSparkMax(2, MotorType.kBrushless);
   private final CANSparkMax sparkNeoR3 = new CANSparkMax(3, MotorType.kBrushless);
   private final CANSparkMax sparkNeoR4 = new CANSparkMax(4, MotorType.kBrushless);
-  private final SpeedControllerGroup speedGroupLeft = new SpeedControllerGroup(sparkNeoL1, sparkNeoL2);
-  private final SpeedControllerGroup speedGroupRight = new SpeedControllerGroup(sparkNeoR3, sparkNeoR4);
+  //private final SpeedControllerGroup speedGroupLeft = new SpeedControllerGroup(sparkNeoL1, sparkNeoL2);
+  //private final SpeedControllerGroup speedGroupRight = new SpeedControllerGroup(sparkNeoR3, sparkNeoR4);
+  private final SpeedControllerGroup speedGroupLeft = new SpeedControllerGroup(sparkNeoL1);
+  private final SpeedControllerGroup speedGroupRight = new SpeedControllerGroup(sparkNeoR3);
   private final DifferentialDrive  differentialDrive = new DifferentialDrive(speedGroupLeft, speedGroupRight);
   private final CANEncoder SparkNeoEncoder1 = sparkNeoL1.getEncoder();
   private final CANEncoder SparkNeoEncoder3 = sparkNeoR3.getEncoder();
@@ -53,7 +55,8 @@ public class Drivetrain extends Subsystem {
     sparkNeoL2.setSmartCurrentLimit(currentLimit);
     sparkNeoR3.setSmartCurrentLimit(currentLimit);
     sparkNeoR4.setSmartCurrentLimit(currentLimit);
-    
+    sparkNeoL2.follow(sparkNeoL1);
+    sparkNeoR4.follow(sparkNeoR3);
    }
 
   @Override

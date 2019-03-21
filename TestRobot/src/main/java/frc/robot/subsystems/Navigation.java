@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.spartanutils.BNO055;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
@@ -22,8 +21,7 @@ public class Navigation extends Subsystem {
   private static AHRS ahrs;
   int counter = 0;
 
-  //Front high is roll negative
-  //Left high is pitch negative
+  //Front high is roll negative, Left high is pitch negative
   //Yaw is the heading
  
   public Navigation() {
@@ -42,6 +40,17 @@ public class Navigation extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  public double getTilt(){
+    return ahrs.getRoll();
+  }
+  public double getYaw(){
+    return  ahrs.getYaw();
+  }
+  public double getPitch(){
+    return ahrs.getPitch();
+  }
+    
 
   public void log(){
     counter ++;

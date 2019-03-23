@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import edu.wpi.first.vision.VisionPipeline;
 
@@ -75,12 +76,83 @@ public class GripPipelineQ implements VisionPipeline {
 		long endTime = System.nanoTime();
 		int xResolution = 320;
 		int yResolution = 240;
+		int cameraShift = 0;
 		Point infoTextLocation= new Point((int)(0.035*xResolution),12);
 		Scalar infoTextColor= new Scalar(0,255,255);
 		Scalar targetWarningColor= new Scalar(20,20,255);
-		Imgproc.putText(source0, String.format("FPS: %1.0f Bogeys:%2d",Math.pow(10.0,9)/(double)(endTime-startTime),
+		Imgproc.rectangle(source0, new Point(0,0), new Point(xResolution,0.06*yResolution), new Scalar(0,0,0), -1);
+		Imgproc.putText(source0, String.format("CPS: %1.0f Bogeys:%2d",Math.pow(10.0,9)/(double)(endTime-startTime),
 				filterContoursOutput.size()), infoTextLocation,1, 0.9, infoTextColor, 1);
 		Imgproc.line(source0, new Point((int)(0.5*xResolution),0.53*yResolution), new Point((int)(0.5*xResolution),0.37*yResolution), targetWarningColor, 2);
+		
+		int targetCount = filterContoursOutput.size();
+		int minTargets = 1;
+		ArrayList<MatOfPoint> mainTargets = new ArrayList<MatOfPoint>();
+		if (targetCount > 1) {
+			mainTargets.add(filterContoursOutput.get(0));
+			mainTargets.add(filterContoursOutput.get(1));
+			/***********************************************/
+		//Do all the post calculations
+
+	    int count=0;
+		int frameCount = filterContoursOutput.size();
+		List<MatOfPoint> hulls  = new ArrayList<MatOfPoint>();
+		Iterator<MatOfPoint> each = mainTargets.iterator();
+		double targetAreas [] = {0.0,0.0};
+		double targetAspectRatio [] = {0.0,0.0};
+		double targetX [] = {0.0,0.0};
+		double targetY [] = {0.0,0.0};
+		double centroidY [] = {0.0,0.0};
+	  	double targetHeights [] = {0.0,0.0};
+		double targetWidths [] = {0.0,0.0};
+		double targetBleedover [] = {0.0,0.0};
+		Scalar targetColor = new Scalar (0, 255, 255);
+
+	    while (each.hasNext()) {
+	        MatOfPoint wrapper = each.next();
+	        Moments moments = Imgproc.moments(wrapper);
+	        
+	        Point centroid = new Point();
+			centroid.x = -cameraShift + (moments.get_m10() / moments.get_m00());
+			centroid.y = moments.get_m01() / moments.get_m00();
+			Rect rectangle = Imgproc.boundingRect(wrapper);
+			
+			//Countour area is not robust to poking it with your finger
+			//double area = Imgproc.contourArea(wrapper);
+			//Convex Hull or Rectangle area is robust to poking it with your finger 
+			final MatOfInt hull = new MatOfInt();
+			Imgproc.convexHull(wrapper, hull);
+			MatOfPoint mopHull = new MatOfPoint();
+			mopHull.create((int) hull.size().height, 1, CvType.CV_32SC2);
+			for (int j = 0; j < hull.size().height; j++) {
+				int index = (int)hull.get(j, 0)[0];
+				double[] point = new double[] { wrapper.get(index, 0)[0], wrapper.get(index, 0)[1]};
+				mopHull.put(j, 0, point);
+			}
+			double area = Imgproc.contourArea(mopHull);
+			//areas are a percentage of total image area
+			targetAreas[count]= 100.0*area/(xResolution*yResolution);
+			targetAspectRatio[count] = (double) rectangle.height / (double) rectangle.width;
+			//X and Y are scaled from -1 to 1 in each direction, so distances in these coordinates
+			//need to be divided by two to get percentages
+			targetX[count]=(-1.0+ 2.0*centroid.x/xResolution);
+			targetY[count]=(-1.0+ 2.0*centroid.y/yResolution);
+			centroidY[count]=centroid.y;
+			
+			//The farther away you get, the worse the heights are
+			targetBleedover[count]= rectangle.area()/area;
+			//The height of the rectangle is in percentage of the y resolution
+			targetHeights[count] = (rectangle.height)/((double)yResolution);
+			targetWidths[count] = (rectangle.width);
+			
+			//Draw the rectangles, they are good to guide the eye
+			Imgproc.rectangle(source0, rectangle.tl(), rectangle.br(), targetColor, 1);
+			hulls.add(count,mopHull);
+			count++;
+	    }
+	    
+		}
+
 		finalMat=source0;
 	}
 

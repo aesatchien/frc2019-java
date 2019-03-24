@@ -81,6 +81,7 @@ public final class Main {
 
   //CJH Stuff - 2019 03 19
   static NetworkTableEntry targetsEntry;
+  static NetworkTableEntry distanceEntry;
 
   private static String configFile = "/boot/frc.json";
   
@@ -139,9 +140,7 @@ public final class Main {
 
     // stream properties
     cam.streamConfig = config.get("stream");
-
     cam.config = config;
-
     cameraConfigs.add(cam);
     return true;
   }
@@ -246,7 +245,6 @@ public final class Main {
     CameraServer inst = CameraServer.getInstance();
     UsbCamera camera = new UsbCamera(config.name, config.path);
     MjpegServer server = inst.startAutomaticCapture(camera);
-
     Gson gson = new GsonBuilder().create();
 
     camera.setConfigJson(gson.toJson(config.config));
@@ -317,17 +315,21 @@ public final class Main {
     // This creates a CvSource to use. This will take in a Mat image that has had OpenCV operations
     // FPS of the MjpegServer is set here 
     int xResolution = 320;
-    int yResolution = 240;
+    int yResolution = 256;
     int processedPort = 1182;
     System.out.println("Starting processed stream on " + processedPort);
     CvSource imageSource = new CvSource("CV Image Source", VideoMode.PixelFormat.kMJPEG, xResolution, yResolution, 10);
     MjpegServer cvStream = new MjpegServer("CV Image Stream", processedPort);
+    //cvStream.getProperty("compression").set(3);
     cvStream.setSource(imageSource);
     CameraServer inst2 = CameraServer.getInstance();
     inst2.addCamera(imageSource);
 
     // start NetworkTables
     NetworkTableInstance ntinst = NetworkTableInstance.getDefault();
+    targetsEntry = ntinst.getEntry("targets");
+    distanceEntry = ntinst.getEntry("distance");
+
     if (server) {
       System.out.println("Setting up NetworkTables server");
       ntinst.startServer();
@@ -336,7 +338,7 @@ public final class Main {
       ntinst.startClientTeam(team);
     }
     
-    targetsEntry = ntinst.getEntry("targets");
+
     // start cameras
     for (CameraConfig config : cameraConfigs) {
       cameras.add(startCamera(config));
@@ -353,8 +355,12 @@ public final class Main {
               new GripPipelineQ() , pipeline -> {
         // do something with pipeline results
         int size = pipeline.filterContoursOutput().size();
+        double distance = pipeline.getDistance();
         targetsEntry.setNumber(size);
+        distanceEntry.setNumber(Math.round(100*distance)/100.0);
+        ntinst.flush();
         imageSource.putFrame(pipeline.gripImage());
+        
 
       });
       /* something like this for GRIP:

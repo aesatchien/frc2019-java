@@ -10,6 +10,7 @@ import frc.robot.commands.pneumatics.*;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.wrist.*;
 import frc.robot.commands.*;
+import frc.robot.commands.elevator.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
@@ -170,13 +171,15 @@ public class OI {
 // start of coButtons
  //Cory these are Bryan's buttons can you check to make sure it work
    //R trigger: Elevator up fast
-  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(1.0, 0.5, coAxisButtonRT));
+  coAxisButtonRT.whenPressed(new Command_SetElevatorHeightPID(1.0, 0.6, coAxisButtonRT));
   //L trigger: Elevator down fast
-  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(-1.0, 0.5, coAxisButtonLT));
+  coAxisButtonLT.whenPressed(new Command_SetElevatorHeightPID(-1.0, 0.6, coAxisButtonLT));
   //R bumper: Elevator up slow coButtonRB
   coButtonRB.whenPressed(new Command_SetElevatorHeightPID(1.0,coButtonRB));
+  //coButtonRB.whenPressed(new Command_SetElevator(0.2,coButtonRB));
   //L bumper: Elevator down slow coButtonLB
   coButtonLB.whenPressed(new Command_SetElevatorHeightPID(-1.0,coButtonLB));
+  //coButtonLB.whenPressed(new Command_SetElevator(-0.2,coButtonLB));
   //X : Cargo in [intake]
   coButtonX.whenPressed(new Command_SetIntake(0.5, coButtonX));
   //B : Cargo out [output]

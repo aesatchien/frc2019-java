@@ -41,7 +41,11 @@ public class Command_SetSolenoid extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (state.equals("climb")) {Robot.pneumatics.toggleClimbingEnabled();}
+    if (state.equals("climb")) {
+      Robot.pneumatics.toggleClimbingEnabled();
+      Robot.pneumatics.setPitchOffset();
+      Robot.pneumatics.setTiltOffset();
+    }
     if (state.equals("compressor")) {Robot.pneumatics.compressorToggle();}
     if (state.equals("hatch")) {Robot.pneumatics.hatchToggle();}
     if (state.equals("retractboth")) {Robot.pneumatics.retractFrontAndBack();}

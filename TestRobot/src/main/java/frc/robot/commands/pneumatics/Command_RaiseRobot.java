@@ -55,7 +55,7 @@ public class Command_RaiseRobot extends Command {
   protected void execute() {
     if (Robot.pneumatics.isClimbingEnabled()){
       Robot.pneumatics.raiseRobot();
-      Timer.delay(0.025);
+      //Timer.delay(0.025);
     }
   }
 

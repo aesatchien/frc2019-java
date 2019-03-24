@@ -45,9 +45,11 @@ public class Pneumatics extends Subsystem {
   private int counter;
   private double tilt;
   private double pitch;
-  private final double frontTiltLimit = 2.0;
-  private final double backTiltLimit = 2.0;
-  private final double pitchLimit = 2.0;
+  private final double frontTiltLimit = 1.5;
+  private final double backTiltLimit = 1.5;
+  private final double pitchLimit = 1.0;
+  private double pitchOffset = 0;
+  private double tiltOffset = 0;
 
     @Override
   public void initDefaultCommand() {
@@ -55,6 +57,13 @@ public class Pneumatics extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
+  //set these when you enable climbing
+  public void setTiltOffset(){
+    tiltOffset = Robot.navigation.getRoll();
+  }
+  public void setPitchOffset(){
+    pitchOffset = Robot.navigation.getPitch();;
+  }
   // see if climbing is enabled
   public boolean isClimbingEnabled(){
     return bClimbingEnabled;
@@ -94,8 +103,8 @@ public class Pneumatics extends Subsystem {
 
   // Raise robot while maintaining balance with the gyro
   public void raiseRobot(){
-    tilt = Robot.navigation.getTilt();
-    pitch = Robot.navigation.getPitch();
+    tilt = Robot.navigation.getRoll() - tiltOffset;
+    pitch = Robot.navigation.getPitch() - pitchOffset;
     bFrontHigh = (tilt < -frontTiltLimit);
     bBackHigh = (tilt > backTiltLimit);
     bLeftHigh = (pitch < - pitchLimit);
@@ -185,6 +194,76 @@ public class Pneumatics extends Subsystem {
   }
 }
 
+ // Lower robot while maintaining balance with the gyro - use same code structure as raise robot
+  public void lowerRobot(){
+    tilt = Robot.navigation.getRoll();
+    pitch = Robot.navigation.getPitch();
+    bFrontHigh = (tilt < -frontTiltLimit);
+    bBackHigh = (tilt > backTiltLimit);
+    bLeftHigh = (pitch < - pitchLimit);
+    bRightHigh = (pitch > pitchLimit);
+    //Let's only write the boolean logic once and rely on the truth table
+    int state = 8*(bFrontHigh?1:0) + 4*(bBackHigh?1:0) + 2*(bLeftHigh?1:0) + (bRightHigh?1:0);
+    // switch statement 
+  switch(state) {
+    // case statements
+    // values must be of same type of expression
+    case 1 :  //R only
+      frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+      break; 
+    
+    case 2 : //L only
+      frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+      break; 
+
+    case 4 : //B only
+      frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+      backSolenoid.set(DoubleSolenoid.Value.kReverse);
+      break; 
+
+    case 5 : //B and R
+      frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+      break; 
+
+    case 6 : //B and L
+      frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+      break; 
+
+    case 8 : //F only
+      frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+      break; 
+
+    case 9 : //F and R
+      frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+      break; 
+
+    case 10: //F and L
+      frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
+      backSolenoid.set(DoubleSolenoid.Value.kOff);
+      break; 
+
+    default : 
+      frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
+      frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
+      backSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+}
+
+/*
     // Lower robot while maintaining balance with the gyro
     public void lowerRobot(){
       tilt = Robot.drivetrain.driveGyro.getAngle();
@@ -204,12 +283,12 @@ public class Pneumatics extends Subsystem {
         backSolenoid.set(DoubleSolenoid.Value.kReverse);
       }
     }
-
+*/
   // Retract both front and back - probably should put this on the gyro as well... copy the code from above
   public void retractFrontAndBack(){  
     frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
     frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
-    backSolenoid.set(DoubleSolenoid.Value.kReverse);
+    backSolenoid.set(DoubleSolenoid.Value.kReverse); 
   }
   public void retractFront(){  
     frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
@@ -268,8 +347,8 @@ public class Pneumatics extends Subsystem {
     counter ++;
     if (Math.floorMod(counter, 10) == 0) {
       //double tilt = Robot.drivetrain.driveGyro.getAngle();
-      tilt = Robot.navigation.getTilt();
-      pitch = Robot.navigation.getPitch();
+      tilt = Robot.navigation.getRoll()-tiltOffset;
+      pitch = Robot.navigation.getPitch() - pitchOffset;
       bFrontHigh = (tilt < -frontTiltLimit);
       bBackHigh = (tilt > backTiltLimit);
       bLeftHigh = (pitch < - pitchLimit);

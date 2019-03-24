@@ -107,6 +107,16 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Elevator Power",
                   "_title": "Elevator Power"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Elevator Distance",
+                  "_title": "Elevator Distance"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Elevator Spark",
+                  "_title": "Elevator Spark"
                 }
               ]
             }
@@ -132,8 +142,8 @@
           },
           "18,0": {
             "size": [
-              3,
-              3
+              5,
+              2
             ],
             "content": {
               "_type": "Grid Layout",
@@ -142,13 +152,6 @@
               "Layout/Number of rows": 3,
               "Layout/Label position": "BOTTOM",
               "_children": {
-                "1,2": {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Compressor",
-                  "_title": "Compressor",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
                 "1,0": {
                   "_type": "Boolean Box",
                   "_source0": "network_table:///SmartDashboard/Back High",
@@ -156,17 +159,38 @@
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 },
-                "0,2": {
+                "0,0": {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Front High",
+                  "_title": "Front High",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                "2,2": {
                   "_type": "Boolean Box",
                   "_source0": "network_table:///SmartDashboard/Climbable",
                   "_title": "Climbable",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 },
-                "0,0": {
+                "1,2": {
                   "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Front High",
-                  "_title": "Front High",
+                  "_source0": "network_table:///SmartDashboard/Right High",
+                  "_title": "Right High",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                "2,0": {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Compressor",
+                  "_title": "Compressor",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                "0,2": {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Left High",
+                  "_title": "Left High",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 }
@@ -211,24 +235,10 @@
               ]
             }
           },
-          "20,5": {
+          "16,5": {
             "size": [
               2,
               3
-            ],
-            "content": {
-              "_type": "Simple Dial",
-              "_source0": "network_table:///SmartDashboard/Elevator Distance",
-              "_title": "Elevator Distance",
-              "Range/Min": 0.0,
-              "Range/Max": 90.0,
-              "Visuals/Show value": true
-            }
-          },
-          "18,3": {
-            "size": [
-              2,
-              5
             ],
             "content": {
               "_type": "List Layout",
@@ -244,15 +254,15 @@
                 },
                 {
                   "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/El Cargo",
-                  "_title": "El Cargo",
+                  "_source0": "network_table:///SmartDashboard/El Rocket2",
+                  "_title": "El Rocket2",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 },
                 {
                   "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/El Rocket2",
-                  "_title": "El Rocket2",
+                  "_source0": "network_table:///SmartDashboard/El Cargo",
+                  "_title": "El Cargo",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 },
@@ -273,9 +283,9 @@
               ]
             }
           },
-          "15,5": {
+          "14,5": {
             "size": [
-              3,
+              2,
               3
             ],
             "content": {
@@ -289,7 +299,7 @@
           },
           "12,5": {
             "size": [
-              3,
+              2,
               3
             ],
             "content": {
@@ -309,7 +319,7 @@
             "content": {
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Floor Recovery",
-              "_title": "/SmartDashboard/Floor Recovery"
+              "_title": "Floor Recovery"
             }
           },
           "10,7": {
@@ -320,7 +330,7 @@
             "content": {
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Wrist Zero",
-              "_title": "/SmartDashboard/Wrist Zero"
+              "_title": "Wrist Zero"
             }
           },
           "10,6": {
@@ -331,7 +341,62 @@
             "content": {
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Half Recovery",
-              "_title": "/SmartDashboard/Half Recovery"
+              "_title": "Half Recovery"
+            }
+          },
+          "21,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/IMU_Pitch",
+              "_title": "Pitch"
+            }
+          },
+          "19,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/IMU_Roll",
+              "_title": "Roll"
+            }
+          },
+          "19,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/IMU_Yaw",
+              "_title": "Yaw"
+            }
+          },
+          "19,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/IMU_TotalYaw",
+              "_title": "IMU_TotalYaw"
+            }
+          },
+          "21,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Update Time, ms",
+              "_title": "/SmartDashboard/Update Time, ms"
             }
           }
         }
@@ -532,15 +597,26 @@
               "Layout/Label position": "BOTTOM",
               "_children": []
             }
+          },
+          "21,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[0,6]/Value",
+              "_title": "Ungrouped/DoubleSolenoid[0,6]/Value"
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 15.0,
-    "y": 0.0,
-    "width": 1900.0,
+    "x": -7.0,
+    "y": 22.0,
+    "width": 1924.0,
     "height": 786.0
   }
 }

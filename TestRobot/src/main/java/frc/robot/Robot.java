@@ -53,12 +53,12 @@ public class Robot extends TimedRobot {
       wrist = new Wrist();
       navigation = new Navigation();
       oi = new OI();  //oi must be last!!!  otherwise the commands start nulls
-      new Thread(() -> {
-       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+     // new Thread(() -> {
+     //  UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
        //camera.setResolution(320, 240);
        // camera.setFPS(15);
         //camera.setVideoMode(PixelFormat.kUnknown, 320, 240, 15);
-       }).start();
+      // }).start();
   }
 
   /**
@@ -139,8 +139,8 @@ public class Robot extends TimedRobot {
     }
     
     // This should set the compressor to off
-    pneumatics.compressorOn();
-    pneumatics.retractFrontAndBack();
+    pneumatics.compressorOff();
+    //pneumatics.retractFrontAndBack();
     reset();
   }
 

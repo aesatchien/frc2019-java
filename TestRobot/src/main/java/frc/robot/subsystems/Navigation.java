@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 public class Navigation extends Subsystem {
   private static AHRS ahrs;
   int counter = 0;
-
+  double updateTime = 0;
   //Front high is roll negative, Left high is pitch negative
   //Yaw is the heading
  
@@ -41,7 +41,7 @@ public class Navigation extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public double getTilt(){
+  public double getRoll(){
     return ahrs.getRoll();
   }
   public double getYaw(){
@@ -55,6 +55,7 @@ public class Navigation extends Subsystem {
   public void log(){
     counter ++;
     if (Math.floorMod(counter, 10) == 0) {
+      SmartDashboard.putNumber(  "Update Time, ms",      1000.0*(Timer.getFPGATimestamp()-updateTime));
       SmartDashboard.putBoolean(  "IMU_Connected",        ahrs.isConnected());
       SmartDashboard.putBoolean(  "IMU_IsCalibrating",    ahrs.isCalibrating());
       SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
@@ -75,6 +76,7 @@ public class Navigation extends Subsystem {
       //SmartDashboard.putNumber(   "IMU_Accel_Y",          ahrs.getWorldLinearAccelY());
       //SmartDashboard.putBoolean(  "IMU_IsMoving",         ahrs.isMoving());
       //SmartDashboard.putBoolean(  "IMU_IsRotating",       ahrs.isRotating());
+      updateTime = Timer.getFPGATimestamp();
     }
   }
 }

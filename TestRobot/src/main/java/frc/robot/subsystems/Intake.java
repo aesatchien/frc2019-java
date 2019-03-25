@@ -17,8 +17,8 @@ public class Intake extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   
-  //private final Spark PWMSpark = new Spark(2);
-  private final Talon PWMSpark = new Talon(2);
+  private final Spark PWMSpark = new Spark(2);
+  //private final Talon PWMSpark = new Talon(2);
 
   @Override
   public void initDefaultCommand() {

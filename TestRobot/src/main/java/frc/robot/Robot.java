@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.subsystems.ExampleSubsystem;
+//import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.cscore.UsbCamera;
@@ -27,7 +27,7 @@ import edu.wpi.cscore.VideoMode.PixelFormat;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+  //public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static Drivetrain drivetrain;
   public static Pneumatics pneumatics;
   public static Elevator elevator;
@@ -162,7 +162,7 @@ public class Robot extends TimedRobot {
   }
 
   public void reset(){
-    drivetrain.driveGyro.reset();
+    drivetrain.reset();
     wrist.reset();
     elevator.reset();
     pneumatics.reset();

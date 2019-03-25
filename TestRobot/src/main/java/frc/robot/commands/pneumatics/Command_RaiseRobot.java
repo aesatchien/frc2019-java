@@ -39,13 +39,13 @@ public class Command_RaiseRobot extends Command {
       // Only reset the gyro if it has been minutes since the last reset
       if (bisInitialized){
         if (now - initTime > 120) {
-          Robot.drivetrain.driveGyro.reset();
+          //Robot.drivetrain.driveGyro.reset();
           initTime = now;
         }
       }
       else {
         bisInitialized = true;
-        Robot.drivetrain.driveGyro.reset();
+        //Robot.drivetrain.driveGyro.reset();
         initTime = now;
       }
     }

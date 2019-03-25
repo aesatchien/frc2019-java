@@ -188,7 +188,7 @@ public class OI {
   coButtonA.whenPressed(new Command_SetSolenoid("hatch",coButtonA));
   //Y run the back wheels to move forward  
   //vcoButtonY.whenPressed(new Command_PneumaticDrive(0.65,coButtonY));
-  coButtonY.whenPressed(new Command_SetIntake(0.15, coButtonY));
+  coButtonY.whenPressed(new Command_SetIntake(0.2, coButtonY));
 
   coPovButtonUp.whenPressed(new Command_LowerRobot(coPovButtonUp));
   coPovButtonDown.whenPressed(new Command_RaiseRobot(coPovButtonDown));
@@ -206,5 +206,7 @@ public class OI {
     SmartDashboard.putData("Floor Recovery", new Command_FloorRecovery(450000));
     SmartDashboard.putData("Half Recovery", new Command_FloorRecovery(100000));
     SmartDashboard.putData("Wrist Zero", new Command_ZeroEncoder());
+    SmartDashboard.putData("Move X", new Command_AutoDrive(30));
+    SmartDashboard.putData("Rotate X", new Command_AutoRotate(45));
   }
 }

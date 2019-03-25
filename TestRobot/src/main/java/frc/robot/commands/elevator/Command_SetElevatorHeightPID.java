@@ -17,7 +17,7 @@ public class Command_SetElevatorHeightPID extends Command {
   Button button;
   double setpoint;
   double counter = 0;
-  final double MAXHEIGHT = 60;
+  final double MAXHEIGHT = 43;
   double increment = 0.3;
 
   public Command_SetElevatorHeightPID() {

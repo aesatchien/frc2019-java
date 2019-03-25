@@ -12,12 +12,15 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANPIDController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.commands.drivetrain.*;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import java.lang.Math;
+import com.revrobotics.ControlType;
+//import edu.wpi.first.wpilibj.interfaces.Gyro;
+//import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+
 
 
 /**
@@ -37,12 +40,15 @@ public class Drivetrain extends Subsystem {
   private final DifferentialDrive  differentialDrive = new DifferentialDrive(speedGroupLeft, speedGroupRight);
   private final CANEncoder SparkNeoEncoder1 = sparkNeoL1.getEncoder();
   private final CANEncoder SparkNeoEncoder3 = sparkNeoR3.getEncoder();
-  public final Gyro driveGyro = new ADXRS450_Gyro();
+  private CANPIDController sparkPIDControllerRight;
+  private CANPIDController sparkPIDControllerLeft;
+  //public final Gyro driveGyro = new ADXRS450_Gyro();
   private final double twistSensitivity = 0.99;
   private int counter;
 	// Used to make robot accelerate smoother - grinding it
 	private static double currentThrust = 0, currentTwist = 0;
 	private static double accelerationLimit = 0.1; // was 0.2, seems kinda high
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   public Drivetrain() {
     super();
@@ -57,6 +63,30 @@ public class Drivetrain extends Subsystem {
     sparkNeoR4.setSmartCurrentLimit(currentLimit);
     sparkNeoL2.follow(sparkNeoL1);
     sparkNeoR4.follow(sparkNeoR3);
+    sparkPIDControllerLeft=sparkNeoL1.getPIDController();
+    sparkPIDControllerRight=sparkNeoR3.getPIDController();
+    SparkNeoEncoder1.setPositionConversionFactor(4.0*3.141/12.255);
+    SparkNeoEncoder3.setPositionConversionFactor(4.0*3.141/12.255);
+    // PID coefficients
+    kP = 0.06; 
+    kI = 0;  //1e-4;
+    kD = 0; //3; 
+    kIz = 0; 
+    kFF = 0.0; 
+    kMaxOutput = 0.99; 
+    kMinOutput = -0.99;
+    sparkPIDControllerLeft.setP(kP);
+    sparkPIDControllerLeft.setI(kI);
+    sparkPIDControllerLeft.setD(kD);
+    sparkPIDControllerLeft.setIZone(kIz);
+    sparkPIDControllerLeft.setFF(kFF);
+    sparkPIDControllerLeft.setOutputRange(kMinOutput, kMaxOutput);
+    sparkPIDControllerRight.setP(kP);
+    sparkPIDControllerRight.setI(kI);
+    sparkPIDControllerRight.setD(kD);
+    sparkPIDControllerRight.setIZone(kIz);
+    sparkPIDControllerRight.setFF(kFF);
+    sparkPIDControllerRight.setOutputRange(kMinOutput, kMaxOutput);
    }
 
   @Override
@@ -68,9 +98,6 @@ public class Drivetrain extends Subsystem {
   public void SparkWithStick(double xSpeed, double zRotation) { 	
     differentialDrive.arcadeDrive(xSpeed, twistSensitivity*zRotation, false);
     //Do we need to do different things when we are fast/slow?
-    if (xSpeed >0.5){
-       //Digital0.set(true);
-    }
   }
 
   public void smoothDrive(double thrust, double twist) {
@@ -104,13 +131,21 @@ public class Drivetrain extends Subsystem {
     differentialDrive.tankDrive(left,  right); 
   }
 
-  public void setVelocity(double velocity){
-    sparkNeoL1.set(velocity);
+  public double getPosition(){
+    return SparkNeoEncoder1.getPosition();
+  }
+
+  public void goToSetPoint(double setPoint){
+    reset();
+    sparkPIDControllerRight.setReference(-setPoint, ControlType.kPosition);
+    sparkPIDControllerLeft.setReference(setPoint, ControlType.kPosition);
   }
 
   public void reset(){
-    //sparkNeoL1.set(0);
-    driveGyro.reset();
+    //driveGyro.reset();
+    SparkNeoEncoder1.setPosition(0);
+    SparkNeoEncoder3.setPosition(0);
+
   }
 
   
@@ -123,7 +158,7 @@ public class Drivetrain extends Subsystem {
       SmartDashboard.putNumber("Position Enc3", SparkNeoEncoder3.getPosition());
       SmartDashboard.putNumber("Velocity Enc3", SparkNeoEncoder3.getVelocity());
       //SmartDashboard.putNumber("Position Enc4", Math.round(SparkNeoEncoder4.getPosition()));
-      SmartDashboard.putNumber("DriveGyro", 0.01*Math.round(100*driveGyro.getAngle()));
+      //SmartDashboard.putNumber("DriveGyro", 0.01*Math.round(100*driveGyro.getAngle()));
       //SmartDashboard.putNumber("BadTiltValue", getBadTilt());
     }
   }

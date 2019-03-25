@@ -64,13 +64,13 @@ public Elevator(){
   sparkPIDController=sparkNeoElevator.getPIDController();
   // set PID coefficients
   // PID coefficients
-  kP = 0.2; 
+  kP = 0.25; 
   kI = 0;  //1e-4;
   kD = 1; 
   kIz = 0; 
   kFF = 0.0; 
   kMaxOutput = 0.75; 
-  kMinOutput = -0.15;
+  kMinOutput = -0.2;
   sparkPIDController.setP(kP);
   sparkPIDController.setI(kI);
   sparkPIDController.setD(kD);
@@ -112,9 +112,10 @@ public Elevator(){
 
   public void reset(){
     //elevatorEncoder.reset();
-    sparkElevatorEncoder.setPosition(0);
     elevatorPower = 0;
     setpoint = 0;
+    sparkElevatorEncoder.setPosition(0);
+    sparkPIDController.setReference(setpoint, ControlType.kPosition);
   }
   public void log() {
     counter ++;

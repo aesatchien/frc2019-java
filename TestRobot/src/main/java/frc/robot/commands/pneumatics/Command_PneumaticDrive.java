@@ -10,6 +10,7 @@ package frc.robot.commands.pneumatics;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.buttons.*;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Command_PneumaticDrive extends Command {
   double speed = 0;
@@ -31,6 +32,8 @@ public class Command_PneumaticDrive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    System.out.println("\nStarted "+  this.getClass().getSimpleName() + "at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
+    
     
   }
 
@@ -38,7 +41,8 @@ public class Command_PneumaticDrive extends Command {
   @Override
   protected void execute() {
     Robot.pneumatics.pneumaticDrive(speed);
-    Robot.drivetrain.smoothDrive(-0.2, 0);
+    //Robot.drivetrain.smoothDrive(-0.2, 0);
+    Robot.drivetrain.setVelocity(100);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -50,6 +54,7 @@ public class Command_PneumaticDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    System.out.println("\nEnded "+  this.getClass().getSimpleName() + "at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
     Robot.pneumatics.pneumaticDrive(0);
   }
 

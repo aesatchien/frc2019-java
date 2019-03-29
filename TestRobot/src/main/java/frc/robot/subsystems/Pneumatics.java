@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import java.lang.Math;
+import edu.wpi.first.wpilibj.Timer;
 
 
 /**
@@ -103,6 +104,14 @@ public class Pneumatics extends Subsystem {
 
   // Raise robot while maintaining balance with the gyro
   public void raiseRobot(){
+  
+   //Try to figure out a way to never let the solenoids be on all the time...
+    //double dutycycle = 0.5;
+    //if(Timer.getFPGATimestamp()%1.0 > dutycycle){
+    //  solenoidOff();
+    //  return;
+    //}
+
     tilt = Robot.navigation.getRoll() - tiltOffset;
     pitch = Robot.navigation.getPitch() - pitchOffset;
     bFrontHigh = (tilt < -frontTiltLimit);

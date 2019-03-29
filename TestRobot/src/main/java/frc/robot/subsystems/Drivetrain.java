@@ -159,8 +159,6 @@ public class Drivetrain extends Subsystem {
   public void setVelocity(double velocity){
     sparkPIDControllerLeft.setReference(velocity, ControlType.kVelocity,1);
     sparkPIDControllerRight.setReference(velocity, ControlType.kVelocity,1);
-    
-
   }  
 
   public void goToSetPoint(double setPoint){

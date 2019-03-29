@@ -16,14 +16,10 @@ public class Command_PneumaticDrive extends Command {
   double speed = 0;
   JoystickButton button;
   public Command_PneumaticDrive() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Robot.drivetrain);
   }
   
   public Command_PneumaticDrive(double myspeed, JoystickButton mybutton) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     this();
     this.speed = myspeed;
     this.button = mybutton;
@@ -33,8 +29,6 @@ public class Command_PneumaticDrive extends Command {
   @Override
   protected void initialize() {
     System.out.println("\nStarted "+  this.getClass().getSimpleName() + "at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
-    
-    
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -62,6 +56,7 @@ public class Command_PneumaticDrive extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    System.out.println("\nInterrupted "+  this.getClass().getSimpleName() + "at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
     Robot.pneumatics.pneumaticDrive(0);
   }
 }

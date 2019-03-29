@@ -22,11 +22,14 @@ import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.cscore.HttpCamera;
+import edu.wpi.cscore.HttpCamera.HttpCameraKind;
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionThread;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import org.opencv.core.Mat;
 import grip.GripPipelineQ;
@@ -324,6 +327,12 @@ public final class Main {
     cvStream.setSource(imageSource);
     CameraServer inst2 = CameraServer.getInstance();
     inst2.addCamera(imageSource);
+    //Shuffleboard.getTab("SmartDashBoard").add(inst2);
+
+    //added this on 3/29/2019 to see if it would then show up in the NT - and it does!  Now I need to customize it.
+    final HttpCamera camera = new HttpCamera("Genius Processed", "http://frcvision.local:1182/?action=stream", HttpCamera.HttpCameraKind.kMJPGStreamer);
+    CameraServer.getInstance().addCamera(camera);
+    //myShuffleboardTab.add(camera);
 
     // start NetworkTables
     NetworkTableInstance ntinst = NetworkTableInstance.getDefault();

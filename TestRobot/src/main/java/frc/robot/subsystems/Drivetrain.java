@@ -48,7 +48,8 @@ public class Drivetrain extends Subsystem {
 	// Used to make robot accelerate smoother - grinding it
 	private static double currentThrust = 0, currentTwist = 0;
 	private static double accelerationLimit = 0.1; // was 0.2, seems kinda high
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput,kP2,kI2,kD2,kIz2,kFF2;   
+
 
   public Drivetrain() {
     super();
@@ -87,6 +88,26 @@ public class Drivetrain extends Subsystem {
     sparkPIDControllerRight.setIZone(kIz);
     sparkPIDControllerRight.setFF(kFF);
     sparkPIDControllerRight.setOutputRange(kMinOutput, kMaxOutput);
+    kP = 5e-4; 
+    kI = 1e-6;  //1e-4;
+    kD = 0; //3; 
+    kIz = 0; 
+    kFF = 0.0; 
+    kMaxOutput = 0.99; 
+    kMinOutput = -0.99;
+    sparkPIDControllerLeft.setP(kP,1);
+    sparkPIDControllerLeft.setI(kI,1);
+    sparkPIDControllerLeft.setD(kD,1);
+    sparkPIDControllerLeft.setIZone(kIz,1);
+    sparkPIDControllerLeft.setFF(kFF,1);
+    sparkPIDControllerLeft.setOutputRange(kMinOutput, kMaxOutput,1);
+    sparkPIDControllerRight.setP(kP,1);
+    sparkPIDControllerRight.setI(kI,1);
+    sparkPIDControllerRight.setD(kD,1);
+    sparkPIDControllerRight.setIZone(kIz,1);
+    sparkPIDControllerRight.setFF(kFF,1);
+    sparkPIDControllerRight.setOutputRange(kMinOutput, kMaxOutput,1);
+
    }
 
   @Override
@@ -134,6 +155,13 @@ public class Drivetrain extends Subsystem {
   public double getPosition(){
     return SparkNeoEncoder1.getPosition();
   }
+
+  public void setVelocity(double velocity){
+    sparkPIDControllerLeft.setReference(velocity, ControlType.kVelocity,1);
+    sparkPIDControllerRight.setReference(velocity, ControlType.kVelocity,1);
+    
+
+  }  
 
   public void goToSetPoint(double setPoint){
     reset();

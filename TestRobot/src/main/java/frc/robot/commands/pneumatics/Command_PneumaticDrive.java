@@ -36,7 +36,7 @@ public class Command_PneumaticDrive extends Command {
   protected void execute() {
     Robot.pneumatics.pneumaticDrive(speed);
     //Robot.drivetrain.smoothDrive(-0.2, 0);
-    Robot.drivetrain.setVelocity(100);
+    Robot.drivetrain.setVelocity(250);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -54,6 +54,10 @@ public class Drivetrain extends Subsystem {
   public Drivetrain() {
     super();
     int currentLimit=80;
+    sparkNeoL1.restoreFactoryDefaults();
+    sparkNeoL2.restoreFactoryDefaults();
+    sparkNeoR3.restoreFactoryDefaults();
+    sparkNeoR4.restoreFactoryDefaults();
     sparkNeoL1.setIdleMode(IdleMode.kCoast);
     sparkNeoL2.setIdleMode(IdleMode.kCoast);
     sparkNeoR3.setIdleMode(IdleMode.kCoast);
@@ -157,8 +161,9 @@ public class Drivetrain extends Subsystem {
   }
 
   public void setVelocity(double velocity){
-    sparkPIDControllerLeft.setReference(velocity, ControlType.kVelocity,1);
+    sparkPIDControllerLeft.setReference(-velocity, ControlType.kVelocity,1);
     sparkPIDControllerRight.setReference(velocity, ControlType.kVelocity,1);
+    differentialDrive.feed();
   }  
 
   public void goToSetPoint(double setPoint){

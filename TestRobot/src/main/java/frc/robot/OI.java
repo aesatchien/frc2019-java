@@ -165,6 +165,8 @@ public class OI {
     povButtonDown.whenPressed(new Command_dPadDrive("down", povButtonDown));
     povButtonLeft.whenPressed(new Command_dPadDrive("left",povButtonLeft));
     povButtonRight.whenPressed(new Command_dPadDrive("right", povButtonRight));
+    // run the back wheels to move forward  
+    buttonStart.whenPressed(new Command_PneumaticDrive(0.65,buttonStart));
     //Set Wrist - fixed the directions, motor has to be inverted
     // Higher number on encoder lowers the wrist, so raising it is the negative direction 
     

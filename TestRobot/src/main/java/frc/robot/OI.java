@@ -192,8 +192,8 @@ public class OI {
   //vcoButtonY.whenPressed(new Command_PneumaticDrive(0.65,coButtonY));
   coButtonY.whenPressed(new Command_SetIntake(0.2, coButtonY));
 
-  coPovButtonUp.whenPressed(new Command_LowerRobot(coPovButtonUp));
-  coPovButtonDown.whenPressed(new Command_RaiseRobot(coPovButtonDown));
+  coPovButtonUp.whenPressed(new Command_RaiseRobot(coPovButtonUp));
+  coPovButtonDown.whenPressed(new Command_LowerRobot(coPovButtonDown));
   coButtonStart.whenPressed(new Command_SetSolenoid("compressor",coButtonStart));
   coButtonBack.whenPressed(new Command_ElevatorReset(coButtonBack));
   //  Operator: End game mode

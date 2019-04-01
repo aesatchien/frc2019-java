@@ -40,12 +40,14 @@ public class Command_RaiseRobot extends Command {
       if (bisInitialized){
         if (now - initTime > 120) {
           //Robot.drivetrain.driveGyro.reset();
+          Robot.pneumatics.setTiltOffset();
           initTime = now;
         }
       }
       else {
         bisInitialized = true;
         //Robot.drivetrain.driveGyro.reset();
+        Robot.pneumatics.setTiltOffset();
         initTime = now;
       }
     }
@@ -54,7 +56,9 @@ public class Command_RaiseRobot extends Command {
   @Override
   protected void execute() {
     if (Robot.pneumatics.isClimbingEnabled()){
-      Robot.pneumatics.raiseRobot();
+      //Robot.pneumatics.raiseRobot();
+      //Robot.pneumatics.raiseRobotTiltOnly();
+      Robot.pneumatics.extendAll();
       //Timer.delay(0.025);
     }
   }

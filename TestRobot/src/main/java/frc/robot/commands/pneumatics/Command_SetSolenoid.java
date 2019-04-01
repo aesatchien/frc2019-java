@@ -47,7 +47,10 @@ public class Command_SetSolenoid extends Command {
       Robot.pneumatics.setTiltOffset();
     }
     if (state.equals("compressor")) {Robot.pneumatics.compressorToggle();}
-    if (state.equals("hatch")) {Robot.pneumatics.hatchToggle();}
+    if (state.equals("RFUp")) {Robot.pneumatics.compressorToggle();}
+    if (state.equals("RFDown")) {Robot.pneumatics.compressorToggle();}
+    if (state.equals("LFUp")) {Robot.pneumatics.compressorToggle();}
+    if (state.equals("LFDown")) {Robot.pneumatics.hatchToggle();}
     if (state.equals("retractboth")) {Robot.pneumatics.retractFrontAndBack();}
     if (state.equals("float")) {Robot.pneumatics.solenoidOff();}
     if (state.equals("togglegear")) {Robot.pneumatics.gearToggle();}      

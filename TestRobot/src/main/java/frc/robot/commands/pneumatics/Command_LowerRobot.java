@@ -38,8 +38,9 @@ public class Command_LowerRobot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.pneumatics.retractFrontAndBack();
-    Robot.pneumatics.lowerRobot();
+    Robot.pneumatics.retractFrontAndBack();
+    //Robot.pneumatics.lowerRobot();
+    
     //Timer.delay(0.025);
   }
 

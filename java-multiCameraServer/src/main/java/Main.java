@@ -330,7 +330,7 @@ public final class Main {
     //Shuffleboard.getTab("SmartDashBoard").add(inst2);
 
     //added this on 3/29/2019 to see if it would then show up in the NT - and it does!  Now I need to customize it.
-    final HttpCamera camera = new HttpCamera("Genius Processed", "http://frcvision.local:1182/?action=stream", HttpCamera.HttpCameraKind.kMJPGStreamer);
+    final HttpCamera camera = new HttpCamera("Genius Processed", "http://10.24.29.12:1182/?action=stream", HttpCamera.HttpCameraKind.kMJPGStreamer);
     CameraServer.getInstance().addCamera(camera);
     //myShuffleboardTab.add(camera);
 

@@ -48,7 +48,7 @@ public class Pneumatics extends Subsystem {
   private double pitch;
   private final double frontTiltLimit = 1.5;
   private final double backTiltLimit = 1.5;
-  private final double pitchLimit = 1.0;
+  private final double pitchLimit = 2.0;
   private double pitchOffset = 0;
   private double tiltOffset = 0;
 
@@ -272,27 +272,32 @@ public class Pneumatics extends Subsystem {
   }
 }
 
-/*
+
     // Lower robot while maintaining balance with the gyro
-    public void lowerRobot(){
-      tilt = Robot.drivetrain.driveGyro.getAngle();
-      if (tilt < - frontTiltLimit ) {
-        frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
-        frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
-        backSolenoid.set(DoubleSolenoid.Value.kOff);
-      }
-      else if (tilt > backTiltLimit) {
+    public void raiseRobotTiltOnly(){
+      tilt = Robot.navigation.getRoll();
+      pitch = Robot.navigation.getPitch();
+      bFrontHigh = (tilt < -frontTiltLimit);
+      bBackHigh = (tilt > backTiltLimit);
+      // Front High
+      if (bFrontHigh) {
         frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
         frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
-        backSolenoid.set(DoubleSolenoid.Value.kReverse);
+        backSolenoid.set(DoubleSolenoid.Value.kForward);
+      }
+      // Back High
+      else if (bBackHigh) {
+        frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+        frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+        backSolenoid.set(DoubleSolenoid.Value.kOff);
       }
       else {
-        frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
-        frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
-        backSolenoid.set(DoubleSolenoid.Value.kReverse);
+        frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+        frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+        backSolenoid.set(DoubleSolenoid.Value.kForward);
       }
     }
-*/
+
   // Retract both front and back - probably should put this on the gyro as well... copy the code from above
   public void retractFrontAndBack(){  
     frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
@@ -305,6 +310,38 @@ public class Pneumatics extends Subsystem {
   }
   public void retractBack(){  
     backSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+  public void extendRightFront(){  
+    frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+  public void extendLeftFront(){  
+    frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void extendFront(){  
+    frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+    frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+  public void extendBack(){  
+    backSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+  public void extendAll(){  
+    frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+    frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+    backSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+  //Try to get each solenoid enough to prime - seems to have a problem with all at once
+  public void primeSolenoids(){  
+    double delay = 0.2;
+    frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+    Timer.delay(delay);
+    frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+    frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+    Timer.delay(delay);
+    frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+    backSolenoid.set(DoubleSolenoid.Value.kForward);
+    Timer.delay(delay);
+    backSolenoid.set(DoubleSolenoid.Value.kOff);
   }
 
   public void highGear(){

@@ -420,6 +420,33 @@
               "imageWidth": 320,
               "imageHeight": 240
             }
+          },
+          "20,5": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "List Layout",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Front On",
+                  "_title": "/SmartDashboard/Front On",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Back On",
+                  "_title": "/SmartDashboard/Back On",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                }
+              ]
+            }
           }
         }
       }
@@ -648,7 +675,7 @@
     }
   ],
   "windowGeometry": {
-    "x": 4.0,
+    "x": 3.0,
     "y": 3.0,
     "width": 1924.0,
     "height": 786.0

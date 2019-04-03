@@ -11,63 +11,35 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.buttons.*;
 
-public class Command_RaiseRobot extends Command {
+
+public class Command_RaiseRobotBack extends Command {
+
   Button button;
-  private double initTime;
-  private boolean bisInitialized;
 
-  public Command_RaiseRobot() {
+  public Command_RaiseRobotBack() {
     requires(Robot.pneumatics);
+    this.setTimeout(0.1);
   }
-
-  public Command_RaiseRobot(Button button) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+  public Command_RaiseRobotBack(Button button) {
     this();
-    this.button = button;
-    this.initTime = Timer.getFPGATimestamp();
-    this.bisInitialized = false;
+    this.button = button;  
   }
-
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    double now = Timer.getFPGATimestamp();
     System.out.println("\nInitialized "+  this.getClass().getSimpleName() +"() at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
-    if (Robot.pneumatics.isClimbingEnabled()){
-      //Need to find a way to know if we have been reset for testing...
-      // Only reset the gyro if it has been minutes since the last reset
-      if (bisInitialized){
-        if (now - initTime > 120) {
-          //Robot.drivetrain.driveGyro.reset();
-          Robot.pneumatics.setTiltOffset();
-          initTime = now;
-        }
-      }
-      else {
-        bisInitialized = true;
-        //Robot.drivetrain.driveGyro.reset();
-        Robot.pneumatics.setTiltOffset();
-        initTime = now;
-      }
-    }
   }
+
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.pneumatics.isClimbingEnabled()){
-      //Robot.pneumatics.raiseRobot();
-      //Robot.pneumatics.raiseRobotTiltOnly();
-      Robot.pneumatics.raiseRobotPredictive();
-      //Robot.pneumatics.extendAll();
-      //Timer.delay(0.025);
-    }
+    if(!Robot.pneumatics.isBackHigh()){Robot.pneumatics.extendBack();}
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return ! button.get();
+    return ! button.get()|| this.isTimedOut();
   }
 
   // Called once after isFinished returns true

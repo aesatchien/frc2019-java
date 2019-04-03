@@ -43,14 +43,17 @@ public class Pneumatics extends Subsystem {
   private boolean bCompressorOn=false;
   private boolean bHatchOpen=false;
   private boolean bClimbingEnabled = false;
+  private boolean bFrontOn = false;
+  private boolean bBackOn = false;
   private int counter;
   private double tilt;
   private double pitch;
-  private final double frontTiltLimit = 1.5;
-  private final double backTiltLimit = 1.5;
+  private final double frontTiltLimit = 1;
+  private final double backTiltLimit = 1;
   private final double pitchLimit = 2.0;
   private double pitchOffset = 0;
   private double tiltOffset = 0;
+  private double dutycycle = 0.4;
 
     @Override
   public void initDefaultCommand() {
@@ -99,18 +102,32 @@ public class Pneumatics extends Subsystem {
     frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
     frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
     backSolenoid.set(DoubleSolenoid.Value.kOff);
+    bFrontOn=false;
+    bBackOn=false;
     //shifter.set(DoubleSolenoid.Value.kOff);
+  }
+
+  public boolean isFrontHigh(){
+    tilt = Robot.navigation.getRoll() - tiltOffset;
+    bFrontHigh = (tilt < -frontTiltLimit);
+    return bFrontHigh;
+  }
+
+  public boolean isBackHigh(){
+    tilt = Robot.navigation.getRoll() - tiltOffset;
+    bBackHigh = (tilt > backTiltLimit);
+    return bBackHigh;
   }
 
   // Raise robot while maintaining balance with the gyro
   public void raiseRobot(){
   
    //Try to figure out a way to never let the solenoids be on all the time...
-    //double dutycycle = 0.5;
-    //if(Timer.getFPGATimestamp()%1.0 > dutycycle){
+    //double dutycycle = 0.4;
+    //if(Timer.getFPGATimestamp()%dutycycle > dutycycle/2.0){
     //  solenoidOff();
     //  return;
-    //}
+  // }
 
     tilt = Robot.navigation.getRoll() - tiltOffset;
     pitch = Robot.navigation.getPitch() - pitchOffset;
@@ -273,36 +290,119 @@ public class Pneumatics extends Subsystem {
 }
 
 
-    // Lower robot while maintaining balance with the gyro
+    // Raise robot while maintaining balance with the IMU
     public void raiseRobotTiltOnly(){
+      double tiltHardCutoff=4;
       tilt = Robot.navigation.getRoll();
       pitch = Robot.navigation.getPitch();
       bFrontHigh = (tilt < -frontTiltLimit);
       bBackHigh = (tilt > backTiltLimit);
+
+      //dutycycle=tilt/10; 
       // Front High
+
       if (bFrontHigh) {
-        frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
-        frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
-        backSolenoid.set(DoubleSolenoid.Value.kForward);
+
+        if(Timer.getFPGATimestamp()%dutycycle > dutycycle/2.0){
+          frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+          frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+        }
+        else{
+          frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+          frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+        }
+        bFrontOn=false;
+
+        if(tilt<-tiltHardCutoff){
+          backSolenoid.set(DoubleSolenoid.Value.kOff);
+          bBackOn=false;
+        }
+        else{
+          backSolenoid.set(DoubleSolenoid.Value.kForward);
+          bBackOn=true;
+        }
       }
       // Back High
       else if (bBackHigh) {
-        frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
-        frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
-        backSolenoid.set(DoubleSolenoid.Value.kOff);
+        if(Timer.getFPGATimestamp()%dutycycle > dutycycle/2.0){
+        backSolenoid.set(DoubleSolenoid.Value.kOff);          
+        }
+        else{
+          backSolenoid.set(DoubleSolenoid.Value.kForward);          
+        }
+
+        bBackOn=false;
+        if(tilt>tiltHardCutoff){
+          frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+          frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+          bFrontOn=false;
+        }
+        else{
+          frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+          frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+          bFrontOn=true;
+        }
       }
       else {
         frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
         frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
         backSolenoid.set(DoubleSolenoid.Value.kForward);
+        bFrontOn=true;
+        bBackOn=true;
       }
     }
+
+
+
+    public void raiseRobotPredictive(){
+      double tiltHardCutoff=3;
+      double tiltMax=2;
+      double period=0.2;
+      double onTime=0;
+      double offTime=0;
+      double gain=2;
+      tilt = Robot.navigation.getRoll()-tiltOffset;
+      bFrontHigh = (tilt < -frontTiltLimit);
+      bBackHigh = (tilt > backTiltLimit);
+      onTime=period*(1-Math.min(1,gain*Math.abs(tilt)/tiltMax));
+      offTime=period-onTime;
+
+      //Everybody on
+      if(Math.abs(tilt)>tiltHardCutoff){
+        frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+        frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+        backSolenoid.set(DoubleSolenoid.Value.kOff);         
+      }
+      else{
+        frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+        frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+        backSolenoid.set(DoubleSolenoid.Value.kForward);
+        Timer.delay(onTime);
+
+        // Front High
+        if(tilt<0){
+          frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+          frontRightSolenoid.set(DoubleSolenoid.Value.kOff);
+          backSolenoid.set(DoubleSolenoid.Value.kForward);        
+        }
+        else{
+          frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
+          frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+          backSolenoid.set(DoubleSolenoid.Value.kOff);           
+        }
+        Timer.delay(offTime);
+      }
+    }
+
+
 
   // Retract both front and back - probably should put this on the gyro as well... copy the code from above
   public void retractFrontAndBack(){  
     frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
     frontRightSolenoid.set(DoubleSolenoid.Value.kReverse);
     backSolenoid.set(DoubleSolenoid.Value.kReverse); 
+    bFrontOn=false;
+    bBackOn=false;
   }
   public void retractFront(){  
     frontLeftSolenoid.set(DoubleSolenoid.Value.kReverse);
@@ -321,14 +421,23 @@ public class Pneumatics extends Subsystem {
   public void extendFront(){  
     frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
     frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
+    backSolenoid.set(DoubleSolenoid.Value.kOff);
+    bFrontOn=true;
+    bBackOn=false;
   }
   public void extendBack(){  
     backSolenoid.set(DoubleSolenoid.Value.kForward);
+    frontLeftSolenoid.set(DoubleSolenoid.Value.kOff);
+    frontRightSolenoid.set(DoubleSolenoid.Value.kOff);    
+    bFrontOn=false;
+    bBackOn=true;
   }
   public void extendAll(){  
     frontRightSolenoid.set(DoubleSolenoid.Value.kForward);
     frontLeftSolenoid.set(DoubleSolenoid.Value.kForward);
     backSolenoid.set(DoubleSolenoid.Value.kForward);
+    bFrontOn=true;
+    bBackOn=true;
   }
   //Try to get each solenoid enough to prime - seems to have a problem with all at once
   public void primeSolenoids(){  
@@ -407,7 +516,8 @@ public class Pneumatics extends Subsystem {
       //SmartDashboard.putNumber("Tilt", 0.01 * Math.round(100 * tilt));
       SmartDashboard.putBoolean("High Gear", bHighGear);
       SmartDashboard.putBoolean("Climbable", bClimbingEnabled);
-
+      SmartDashboard.putBoolean("Front On", bFrontOn);
+      SmartDashboard.putBoolean("Back On", bBackOn);
     }
   }
 

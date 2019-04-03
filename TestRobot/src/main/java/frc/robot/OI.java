@@ -194,6 +194,8 @@ public class OI {
 
   coPovButtonUp.whenPressed(new Command_RaiseRobot(coPovButtonUp));
   coPovButtonDown.whenPressed(new Command_LowerRobot(coPovButtonDown));
+  coPovButtonRight.whenPressed(new Command_RaiseRobotFront(coPovButtonRight));
+  coPovButtonLeft.whenPressed(new Command_RaiseRobotBack(coPovButtonLeft));
   coButtonStart.whenPressed(new Command_SetSolenoid("compressor",coButtonStart));
   coButtonBack.whenPressed(new Command_ElevatorReset(coButtonBack));
   //  Operator: End game mode

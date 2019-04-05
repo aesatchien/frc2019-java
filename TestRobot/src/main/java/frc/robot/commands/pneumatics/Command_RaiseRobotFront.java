@@ -35,7 +35,9 @@ public class Command_RaiseRobotFront extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(!Robot.pneumatics.isFrontHigh()){Robot.pneumatics.extendFront();}
+    if (Robot.pneumatics.isClimbingEnabled()){
+      if(!Robot.pneumatics.isFrontHigh()){Robot.pneumatics.extendFront();}
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

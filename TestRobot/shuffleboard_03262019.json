@@ -434,14 +434,14 @@
                 {
                   "_type": "Boolean Box",
                   "_source0": "network_table:///SmartDashboard/Front On",
-                  "_title": "/SmartDashboard/Front On",
+                  "_title": "Front On",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 },
                 {
                   "_type": "Boolean Box",
                   "_source0": "network_table:///SmartDashboard/Back On",
-                  "_title": "/SmartDashboard/Back On",
+                  "_title": "Back On",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
                 }

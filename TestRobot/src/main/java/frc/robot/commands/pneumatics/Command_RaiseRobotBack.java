@@ -33,7 +33,9 @@ public class Command_RaiseRobotBack extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(!Robot.pneumatics.isBackHigh()){Robot.pneumatics.extendBack();}
+    if (Robot.pneumatics.isClimbingEnabled()){
+      if(!Robot.pneumatics.isBackHigh()){Robot.pneumatics.extendBack();}
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

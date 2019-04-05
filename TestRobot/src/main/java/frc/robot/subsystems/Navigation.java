@@ -14,11 +14,13 @@ import com.kauailabs.navx.frc.AHRS;
 import com.kauailabs.navx.frc.AHRS.SerialDataType;
 import edu.wpi.first.wpilibj.DriverStation; 
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.AnalogInput;
 /**
  * Add your docs here.
  */
 public class Navigation extends Subsystem {
   private static AHRS ahrs;
+  private static AnalogInput ultraClimber;
   int counter = 0;
   double updateTime = 0;
   //Front high is roll negative, Left high is pitch negative
@@ -33,7 +35,7 @@ public class Navigation extends Subsystem {
     catch (RuntimeException ex ) {
       DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
     }
-  
+    ultraClimber = new AnalogInput(0);
   }
   @Override
   public void initDefaultCommand() {
@@ -76,6 +78,8 @@ public class Navigation extends Subsystem {
       //SmartDashboard.putNumber(   "IMU_Accel_Y",          ahrs.getWorldLinearAccelY());
       //SmartDashboard.putBoolean(  "IMU_IsMoving",         ahrs.isMoving());
       //SmartDashboard.putBoolean(  "IMU_IsRotating",       ahrs.isRotating());
+      SmartDashboard.putNumber(   "Sonic Voltage",         ultraClimber.getAverageVoltage());
+      SmartDashboard.putNumber(   "Sonic Height",         (double)((int)(10*4*ultraClimber.getAverageVoltage()))/10.0 -1);
       updateTime = Timer.getFPGATimestamp();
     }
   }

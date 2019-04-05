@@ -360,7 +360,7 @@ public class Pneumatics extends Subsystem {
       double period=0.2;
       double onTime=0;
       double offTime=0;
-      double gain=2;
+      double gain=0.5;
       tilt = Robot.navigation.getRoll()-tiltOffset;
       bFrontHigh = (tilt < -frontTiltLimit);
       bBackHigh = (tilt > backTiltLimit);

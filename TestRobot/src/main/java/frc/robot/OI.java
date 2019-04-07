@@ -211,7 +211,8 @@ public class OI {
     SmartDashboard.putData("Floor Recovery", new Command_FloorRecovery(450000));
     SmartDashboard.putData("Half Recovery", new Command_FloorRecovery(100000));
     SmartDashboard.putData("Wrist Zero", new Command_ZeroEncoder());
-    SmartDashboard.putData("Move X", new Command_AutoDrive(30));
-    SmartDashboard.putData("Rotate X", new Command_AutoRotate(45));
+    SmartDashboard.putData("Move X", new Command_AutoDrive(50));
+    //SmartDashboard.putData("Rotate X", new Command_AutoRotate(45));
+    SmartDashboard.putData("Defense Mode", new Command_DefensiveWrist(-1.0));
   }
 }

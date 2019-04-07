@@ -120,6 +120,10 @@ public class Wrist extends Subsystem {
   public void setWristPower(double pow) {
     wristTalon.set(ControlMode.PercentOutput, pow);
   }
+  public void setCurrent(double current){
+    wristTalon.set(ControlMode.Current, current);
+  }
+
   public double getWristSetpoint() {
    return wristTalon.getClosedLoopTarget(0);
   }

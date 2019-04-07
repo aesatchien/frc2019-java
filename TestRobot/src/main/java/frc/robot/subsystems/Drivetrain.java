@@ -18,10 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drivetrain.*;
 import java.lang.Math;
 import com.revrobotics.ControlType;
-//import edu.wpi.first.wpilibj.interfaces.Gyro;
-//import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-
-
 
 /**
  * Add your docs here.

@@ -17,10 +17,11 @@ import edu.wpi.first.wpilibj.Timer;
 public class Command_AutoDrive extends Command {
   double setpoint;
   double tolerence=0.5;
+  double initialPosition = 0;
   private Command_AutoDrive() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
-    this.setTimeout(5);
+    this.setTimeout(2.5);
   }
 
   public Command_AutoDrive(double setpoint) {
@@ -33,18 +34,21 @@ public class Command_AutoDrive extends Command {
   @Override
   protected void initialize() {
     System.out.println("\nStarted "+  this.getClass().getSimpleName() +"("+ String.format("%.1f",this.setpoint) +") and button value: "+ Robot.oi.stick.getPOV(0) +" at " + String.format("%.2f",(Timer.getFPGATimestamp()-Robot.enabledTime)) + "s");
-    Robot.drivetrain.goToSetPoint(setpoint);
+    initialPosition=Robot.drivetrain.getPosition();
+    //Robot.drivetrain.setVelocity(1500);
+    //Robot.drivetrain.goToSetPoint(setpoint);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.drivetrain.setVelocity(500);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(setpoint-Robot.drivetrain.getPosition())<=tolerence || this.isTimedOut();
+    return Math.abs(setpoint-(Robot.drivetrain.getPosition()-initialPosition)) <=tolerence || this.isTimedOut();
   }
 
   // Called once after isFinished returns true
